@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MIN(x,y) (((x)<(y))?(x):(y))
 
 typedef struct sNodo{
     void* dato;
@@ -12,6 +13,11 @@ typedef struct sNodo{
 }tNodo;
 
 typedef tNodo* tLista;
+
+typedef struct{
+    int id;
+    char nombre[25];
+}tPersona;
 
 void crearLista(tLista* pLista);
 int ponerEnLista(tLista* pLista, const void* dato, unsigned tam);
