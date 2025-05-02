@@ -6,19 +6,23 @@ int main()
     tPersona personas[]={
         {1234, "candela"},
         {1235, "nahuel"},
-    }, perAux;
+        {1236, "nico"},
+        {1237, "lucas"},
+        {1238, "llobell"},
+        {1239, "mateo"},
+    }, per1 = {1234, "candela"}, per2 = {1240, "asdf"};
+    int i;
 
     crearLista(&lista);
-    if(ponerEnLista(&lista, &personas, sizeof(tPersona)))
-        printf("Te la puse\n");
-    if(ponerEnLista(&lista, &personas, sizeof(tPersona)))
-        printf("Te la puse\n");
-    if(sacarDeLista(&lista, &perAux, sizeof(tPersona)))
-        printf("Nombre: %s, DNI: %d\n", perAux.nombre, perAux.id);
-    if(listaVacia(&lista))
-        printf("Lista vacia\n");
+    for(i=0;i<sizeof(personas)/sizeof(tPersona);i++){
+        ponerEnLista(&lista, personas+i, sizeof(tPersona));
+    }
+    mapLista(&lista, mostrarPersonas);
+    if(insertarSinDuplicados(&lista, &per1, sizeof(tPersona), compararPersonas))
+        printf("Se insertó correctamente\n");/*
+    if(insertarSinDuplicados(&lista, &per2, sizeof(tPersona), compararPersonas))
+        printf("Se insertó correctamente\n");*/
+    mapLista(&lista, mostrarPersonas);
     vaciarLista(&lista);
-    if(listaVacia(&lista))
-        printf("Lista vacia\n");
     return 0;
 }

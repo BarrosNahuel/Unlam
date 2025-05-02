@@ -40,13 +40,50 @@ void vaciarLista(tLista* pLista){
         elim = *pLista;
     }
 }
-/*
 int mapLista(tLista* pLista, void accion(tNodo* nodo)){
     tNodo* nodo = *pLista;
+    if(!(*pLista))
+        return 0;
     while(nodo){
-
+        accion(nodo);
+        nodo = nodo->sig;
     }
-}*/
+    return 1;
+}
+
+int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, int cmp(tNodo* nodo1, tNodo* nodo2)){
+    tNodo* nodoActual = *pLista;
+    tNodo* nodoNuevo = (tNodo*) malloc(sizeof(tNodo));
+    if(!nodoNuevo)
+        return 0;
+    nodoNuevo->dato = malloc(tam);
+    memcpy(nodoNuevo->dato, dato, tam);
+    nodoNuevo->tam = tam;
+    while(!cmp(nodoActual, nodoNuevo) && nodoActual != NULL){
+        nodoActual = nodoActual->sig;
+    }
+    if(nodoActual == NULL){
+        nodoNuevo->sig = *pLista;
+        *pLista = nodoNuevo;
+    }
+    else{
+        free(nodoNuevo->dato);
+        free(nodoNuevo);
+        return 0;
+    }
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
