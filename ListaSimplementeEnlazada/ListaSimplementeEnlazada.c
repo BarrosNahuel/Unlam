@@ -51,12 +51,16 @@ int mapLista(tLista* pLista, void accion(tNodo* nodo)){
     return 1;
 }
 
-int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, int cmp(tNodo* nodo1, tNodo* nodo2)){
+int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, int cmp(const tNodo* nodo1, const tNodo* nodo2)){
     tNodo* nodoActual = *pLista;
     tNodo* nodoNuevo = (tNodo*) malloc(sizeof(tNodo));
     if(!nodoNuevo)
         return 0;
     nodoNuevo->dato = malloc(tam);
+    if(!nodoNuevo->dato){
+        free(nodoNuevo);
+        return 0;
+    }
     memcpy(nodoNuevo->dato, dato, tam);
     nodoNuevo->tam = tam;
     while(!cmp(nodoActual, nodoNuevo) && nodoActual != NULL){

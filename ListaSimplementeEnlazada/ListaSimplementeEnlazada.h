@@ -25,9 +25,9 @@ int sacarDeLista(tLista* pLista, void* dato, unsigned tam);
 int listaVacia(const tLista* pLista);
 void vaciarLista(tLista* lista);
 int mapLista(tLista* lista, void accion(tNodo* nodo));
-int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, int cmp(tNodo* nodo1, tNodo* nodo2));
+int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, int cmp(const tNodo* nodo1, const tNodo* nodo2));
 
 void cambiarDni(tNodo* nodo);
 void mostrarPersonas(tNodo* nodo);
-int compararPersonas(tNodo* nodo1, tNodo* nodo2);
+int compararPersonas(const tNodo* nodo1,const tNodo* nodo2);
 #endif // LISTASIMPLEMENTEENLAZADA_H_INCLUDED

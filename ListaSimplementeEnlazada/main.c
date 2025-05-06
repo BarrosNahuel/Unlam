@@ -19,9 +19,9 @@ int main()
     }
     mapLista(&lista, mostrarPersonas);
     if(insertarSinDuplicados(&lista, &per1, sizeof(tPersona), compararPersonas))
-        printf("Se insertó correctamente\n");/*
+        printf("Se inserto correctamente\n");
     if(insertarSinDuplicados(&lista, &per2, sizeof(tPersona), compararPersonas))
-        printf("Se insertó correctamente\n");*/
+        printf("Se inserto correctamente\n");
     mapLista(&lista, mostrarPersonas);
     vaciarLista(&lista);
     return 0;
