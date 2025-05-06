@@ -63,18 +63,16 @@ int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, int cm
     }
     memcpy(nodoNuevo->dato, dato, tam);
     nodoNuevo->tam = tam;
-    while(!cmp(nodoActual, nodoNuevo) && nodoActual != NULL){
+    while(nodoActual != NULL){
+        if(cmp(nodoActual, nodoNuevo)){
+            free(nodoNuevo->dato);
+            free(nodoNuevo);
+            return 0;
+        }
         nodoActual = nodoActual->sig;
     }
-    if(nodoActual == NULL){
-        nodoNuevo->sig = *pLista;
-        *pLista = nodoNuevo;
-    }
-    else{
-        free(nodoNuevo->dato);
-        free(nodoNuevo);
-        return 0;
-    }
+    nodoNuevo->sig = *pLista;
+    *pLista = nodoNuevo;
     return 1;
 }
 

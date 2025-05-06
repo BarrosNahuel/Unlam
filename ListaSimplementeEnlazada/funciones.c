@@ -2,8 +2,6 @@
 
 int compararPersonas(const tNodo* nodo1,const tNodo* nodo2){
     tPersona per1, per2;
-    if(!nodo1 || !nodo2)
-        return 0;
     memcpy(&per1, nodo1->dato, nodo1->tam);
     memcpy(&per2, nodo2->dato, nodo2->tam);
     if(per2.id == per1.id){
