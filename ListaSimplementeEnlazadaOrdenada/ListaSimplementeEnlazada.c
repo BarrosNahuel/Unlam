@@ -113,7 +113,7 @@ int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,in
 }
 
 
-int eliminarElemento(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp)
+int eliminarElementoPorClave(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp)
 {
     tNodo* elim;
     if(! *pLista)
@@ -137,6 +137,25 @@ int eliminarElemento(tLista* pLista,void* dato, unsigned tam,const void* clave, 
     return 1;
 }
 
+int unirDuplicadosOrdenado(tLista *pLista, tCMP cmp, tUnir unir){
+    tNodo *sig = (*pLista)->sig, *elim;
+    if(!*pLista)
+        return 0;
+    while(sig){
+        if(cmp((*pLista)->dato, sig->dato)){
+            unir((*pLista)->dato, sig->dato);
+            elim = sig;
+            sig = elim->sig;
+            free(elim->dato);
+            free(elim);
+        }
+        else{
+            *pLista = sig;
+            sig = (*pLista)->sig;
+        }
+    }
+    return 1;
+}
 
 
 

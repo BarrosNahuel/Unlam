@@ -16,13 +16,8 @@ typedef struct sNodo
 
 typedef tNodo* tLista;
 
-typedef struct
-{
-    int id;
-    char nombre[25];
-} tPersona;
-
-typedef int(*tCMP)(const void* nodo1, const void* nodo2);
+typedef int(*tCMP)(const void* dato1, const void* dato2);
+typedef int (*tUnir)(void* orig, const void* dupl);
 
 void crearLista(tLista* pLista);
 int ponerEnLista(tLista* pLista, const void* dato, unsigned tam);
@@ -32,12 +27,7 @@ void vaciarLista(tLista* lista);
 void mapLista(tLista* lista, void accion(tNodo* nodo));
 int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam,tCMP);
 int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,int dup);
-int eliminarElemento(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp);
+int eliminarElementoPorClave(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp);
+int unirDuplicadosOrdenado(tLista *pLista, tCMP cmp, tUnir unir);
 
-
-void cambiarDni(tNodo* nodo);
-void mostrarPersonas(tNodo* nodo);
-int compararPersonasDni(const void* nodo1,const void* nodo2);
-int compararPersonasNombre(const void* nodo1,const void* nodo2);
-int compararPersonasNombreClave(const void* nodo1,const void* nodo2);
 #endif // LISTASIMPLEMENTEENLAZADA_H_INCLUDED

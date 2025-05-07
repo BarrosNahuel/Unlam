@@ -27,17 +27,21 @@
 1746629800 source:c:\users\laboratorios\desktop\listasimplementeenlazada\main.c
 	"ListaSimplementeEnlazada.h"
 
-1746629794 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\funciones.c
-	"ListaSimplementeEnlazada.h"
+1746657297 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\funciones.c
+	"funciones.h"
 
-1746652971 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.h
+1746657415 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1746653040 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.c
+1746657322 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.c
 	"ListaSimplementeEnlazada.h"
 
-1746652971 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\main.c
+1746657372 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\main.c
+	"ListaSimplementeEnlazada.h"
+	"funciones.h"
+
+1746657310 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\funciones.h
 	"ListaSimplementeEnlazada.h"
 
