@@ -8,29 +8,29 @@ int ponerEnLista(tLista* pLista, const void* dato, unsigned tam)
 {
     tNodo* nue = (tNodo*) malloc(sizeof(tNodo));
     if(!nue)
-        return SIN_MEM;
+        return 0;
     nue->dato = malloc(tam);
     if(!nue->dato)
     {
         free(nue);
-        return SIN_MEM;
+        return 0;
     }
     memcpy(nue->dato, dato, tam);
     nue->tam = tam;
     nue->sig = *pLista;
     *pLista = nue;
-    return TODO_OK; ///preferiria un TODO_OK
+    return 1;
 }
 int sacarDeLista(tLista* pLista, void* dato, unsigned tam)
 {
     tNodo* elim = *pLista;
-    if(!*pLista) ///*pLista == NULL es un poco mas legible
-        return ERROR;
+    if(!*pLista)
+        return 0;
     memcpy(dato, elim->dato, MIN(tam, elim->tam));
     *pLista = elim->sig;
     free(elim->dato);
     free(elim);
-    return TODO_OK;
+    return 1;
 }
 int listaVacia(const tLista* pLista)
 {
@@ -48,49 +48,41 @@ void vaciarLista(tLista* pLista)
     }
 }
 
-int mapLista(tLista* pLista, void accion(tNodo* nodo))
+void mapLista(tLista* pLista, void accion(tNodo* nodo))
 {
-    tNodo* nodo = *pLista;
-    if(!(*pLista))
-        return ERROR;
-    while(nodo)
+    while(*pLista)
     {
-        accion(nodo);
-        nodo = nodo->sig;
+        accion(*pLista);
+        pLista = &(*pLista)->sig;
     }
-    return TODO_OK;
 }
 
 int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, tCMP cmp)
 {
-    tNodo* nodoActual = *pLista;
-    tNodo* nodoNuevo = (tNodo*) malloc(sizeof(tNodo)); ///seria mas viable primero validar que el dato no esta repetido
-    if(!nodoNuevo)                                     ///y y luego, si no esta repetido, reservar memoria, copiar dato, etc
-        return SIN_MEM;
+    tNodo* nodoNuevo;
+    while(*pLista != NULL)
+    {
+        if(cmp((*pLista)->dato, dato))
+            return 0;
+        pLista = &(*pLista)->sig;
+    }
+    nodoNuevo = (tNodo*) malloc(sizeof(tNodo));
+    if(!nodoNuevo)
+        return 0;
     nodoNuevo->dato = malloc(tam);
     if(!nodoNuevo->dato)
     {
         free(nodoNuevo);
-        return SIN_MEM;
+        return 0;
     }
     memcpy(nodoNuevo->dato, dato, tam);
     nodoNuevo->tam = tam;
-    while(nodoActual != NULL)
-    {
-        if(cmp(nodoActual, nodoNuevo))
-        {
-            free(nodoNuevo->dato);
-            free(nodoNuevo);
-            return SIN_MEM;
-        }
-        nodoActual = nodoActual->sig;
-    }
     nodoNuevo->sig = *pLista;
     *pLista = nodoNuevo;
-    return TODO_OK;
+    return 1;
 }
 
-int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,int dup)
+int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,int duplicado)
 {
     tNodo* nodoNuevo;
     int comp = 1;
@@ -100,26 +92,24 @@ int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,in
         pLista = &(*pLista)->sig;
     }
 
-    if(dup==NO && comp == 0)///es para no tener duplicados
-        return DUPLICADO;
+    if(duplicado && comp == 0)
+        return 0;
 
-    ///Reservo memoria
     nodoNuevo = (tNodo*) malloc(sizeof(tNodo));
     if(!nodoNuevo)
-        return SIN_MEM;
+        return 0;
     nodoNuevo->dato = malloc(tam);
     if(!nodoNuevo->dato)
     {
         free(nodoNuevo);
-        return SIN_MEM;
+        return 0;
     }
 
-    ///Inserto el dato
     memcpy(nodoNuevo->dato, dato, tam);
     nodoNuevo->tam = tam;
     nodoNuevo->sig = *pLista;
     *pLista = nodoNuevo;
-    return TODO_OK;
+    return 1;
 }
 
 
@@ -127,14 +117,14 @@ int eliminarElemento(tLista* pLista,void* dato, unsigned tam,const void* clave, 
 {
     tNodo* elim;
     if(! *pLista)
-        return ERROR;
+        return 0;
 
     while(*pLista != NULL &&  cmp(clave,(*pLista)->dato) != 0)
     {
         pLista = &(*pLista)->sig;
     }
     if(*pLista == NULL)
-        return ERROR;
+        return 0;
 
     elim = *pLista;
     *pLista = elim->sig;
@@ -144,7 +134,7 @@ int eliminarElemento(tLista* pLista,void* dato, unsigned tam,const void* clave, 
     free(elim);
 
 
-    return TODO_OK;
+    return 1;
 }
 
 

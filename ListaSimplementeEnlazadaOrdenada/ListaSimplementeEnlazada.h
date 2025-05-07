@@ -5,12 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #define MIN(x,y) (((x)<(y))?(x):(y))
-#define SI 1
-#define NO 0
-#define TODO_OK 1
-#define ERROR 0
-#define SIN_MEM 0
-#define DUPLICADO 2
 
 
 typedef struct sNodo
@@ -22,7 +16,6 @@ typedef struct sNodo
 
 typedef tNodo* tLista;
 
-///esto tambien iria en funciones.h
 typedef struct
 {
     int id;
@@ -36,12 +29,12 @@ int ponerEnLista(tLista* pLista, const void* dato, unsigned tam);
 int sacarDeLista(tLista* pLista, void* dato, unsigned tam);
 int listaVacia(const tLista* pLista);
 void vaciarLista(tLista* lista);
-int mapLista(tLista* lista, void accion(tNodo* nodo)); ///no deberia retornar nada
+void mapLista(tLista* lista, void accion(tNodo* nodo));
 int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam,tCMP);
 int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,int dup);
 int eliminarElemento(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp);
 
-///no son primitivas, deberian ir en funciones.h
+
 void cambiarDni(tNodo* nodo);
 void mostrarPersonas(tNodo* nodo);
 int compararPersonasDni(const void* nodo1,const void* nodo2);

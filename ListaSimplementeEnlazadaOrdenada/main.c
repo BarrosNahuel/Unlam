@@ -1,4 +1,3 @@
-///GRUPO GENERICO
 #include "ListaSimplementeEnlazada.h"
 
 int main()
@@ -18,21 +17,19 @@ int main()
     char* nom="mateo";
 
     crearLista(&lista);
-    for(i=0; i<sizeof(personas)/sizeof(tPersona); i++) /// (Observacion - bajo valor) Mejor forma seria: sizeof(personas) / sizeof(personas[0]) -> Esto nos permoite cambiar el tipo de dato a futuro
+    for(i=0; i<sizeof(personas)/sizeof(tPersona); i++)
     {
-        insertarOrdenado(&lista, personas+i, sizeof(tPersona),compararPersonasDni,NO);
+        insertarOrdenado(&lista, personas+i, sizeof(tPersona),compararPersonasDni,0);
     }
     mapLista(&lista, mostrarPersonas);
-    if(insertarOrdenado(&lista, &per1, sizeof(tPersona), compararPersonasDni,NO))
+    if(insertarOrdenado(&lista, &per1, sizeof(tPersona), compararPersonasDni,0))
         printf("Se inserto correctamente\n");
-    if(insertarOrdenado(&lista, &per2, sizeof(tPersona), compararPersonasDni,NO))
+    if(insertarOrdenado(&lista, &per2, sizeof(tPersona), compararPersonasDni,0))
         printf("\nSe inserto correctamente\n");
     if(eliminarElemento(&lista, &per1, sizeof(tPersona),nom,compararPersonasNombreClave))
         printf("OK\n");
     mapLista(&lista, mostrarPersonas);
     vaciarLista(&lista);
-
-    ///
 
     return 0;
 }
