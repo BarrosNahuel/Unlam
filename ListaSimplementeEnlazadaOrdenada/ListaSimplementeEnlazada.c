@@ -163,20 +163,30 @@ void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir){
     tNodo **sig, *elim;
     int flag = 1;
     while(*pLista){
+        ///Me paro en el puntero a la direccion del nodo al que voy a comparar,
+        ///entonces si la comparacion da verdadera elimino el nodo apuntado por
+        ///"nodo->sig" y puedo actualizar "nodo->sig" al siguiente nodo del nodo eliminado.
+
+        ///Si no utilizo un doble puntero y elimino un nodo, el "nodo->sig" del nodo
+        ///anterior al que elimine va a seguir apuntando a ese nodo que ya elimine y
+        ///no tengo forma de cambiarlo.
+
         sig = &(*pLista)->sig;
         while(*sig){
             if(cmp((*pLista)->dato, (*sig)->dato)){
                 unir((*pLista)->dato, (*sig)->dato);
                 elim = *sig;
                 *sig = elim->sig;
+                ///Si el nodo siguiente a pLista se elimina, se actualiza pLista->sig
                 if(flag){
-                    (*pLista)->sig = *sig;///<---
+                    (*pLista)->sig = *sig;
                 }
                 free(elim->dato);
                 free(elim);
             }
             else{
                 sig = &(*sig)->sig;
+                ///actualizo la bandera porque ya no voy a tener que modificar el siguiente de pLista
                 flag = 0;
             }
         }

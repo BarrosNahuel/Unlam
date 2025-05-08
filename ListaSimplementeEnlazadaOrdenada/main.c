@@ -5,8 +5,8 @@ int main()
 {
     tLista lista;
     crearLista(&lista);
-    if(!crearLotePruebas(&lista))
-        return 1;
+    //if(!crearLotePruebas(&lista))
+        //return 1;
     printf("<----------MOSTRANDO PEDIDOS---------->\n");
     mapLista(&lista, mostrarPedidos);
     printf("<------------------------------------->\n");
