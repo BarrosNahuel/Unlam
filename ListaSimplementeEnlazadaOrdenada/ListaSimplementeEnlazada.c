@@ -138,23 +138,51 @@ int eliminarElementoPorClave(tLista* pLista,void* dato, unsigned tam,const void*
 }
 
 int unirDuplicadosOrdenado(tLista *pLista, tCMP cmp, tUnir unir){
-    tNodo *sig = (*pLista)->sig, *elim;
+    tNodo *sig, *elim;
     if(!*pLista)
         return 0;
+    sig = (*pLista)->sig;
     while(sig){
         if(cmp((*pLista)->dato, sig->dato)){
             unir((*pLista)->dato, sig->dato);
             elim = sig;
             sig = elim->sig;
+            (*pLista)->sig = sig;
             free(elim->dato);
             free(elim);
         }
         else{
-            *pLista = sig;
+            pLista = &(*pLista)->sig;
             sig = (*pLista)->sig;
         }
     }
     return 1;
+}
+
+void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir){
+    tNodo **sig, *elim;
+    int flag = 1;
+    while(*pLista){
+        sig = &(*pLista)->sig;
+        while(*sig){
+            if(cmp((*pLista)->dato, (*sig)->dato)){
+                unir((*pLista)->dato, (*sig)->dato);
+                elim = *sig;
+                *sig = elim->sig;
+                if(flag){
+                    (*pLista)->sig = *sig;///<---
+                }
+                free(elim->dato);
+                free(elim);
+            }
+            else{
+                sig = &(*sig)->sig;
+                flag = 0;
+            }
+        }
+        pLista = &(*pLista)->sig;
+        flag = 1;
+    }
 }
 
 

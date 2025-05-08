@@ -10,11 +10,11 @@ int main()
     printf("<----------MOSTRANDO PEDIDOS---------->\n");
     mapLista(&lista, mostrarPedidos);
     printf("<------------------------------------->\n");
-    if(unirDuplicadosOrdenado(&lista, compararPedidos, unirPedidos)){
-        printf("<----------MOSTRANDO PEDIDOS---------->\n");
-        mapLista(&lista, mostrarPedidos);
-        printf("<------------------------------------->\n");
-    }
+
+    unirDuplicadosDesordenado(&lista, compararPedidos, unirPedidos);
+    printf("<----------MOSTRANDO PEDIDOS---------->\n");
+    mapLista(&lista, mostrarPedidos);
+    printf("<------------------------------------->\n");
 //    if(insertarOrdenado(&lista,))
 //        printf("Se inserto correctamente\n");
 //    if(insertarOrdenado(&lista,))

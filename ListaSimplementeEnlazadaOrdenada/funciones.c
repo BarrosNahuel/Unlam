@@ -3,25 +3,46 @@
 int crearLotePruebas(tLista *pLista){
     int i;
     tPedido pedidos[] = {
-        {3522, "Pañales", 5},
+        ///ordenado
+//        {3522, "Pañales", 5},
+//        {3522, "Pañales", 1},
+//        {3522, "Pañales", 6},
+//        {3540, "Chupetes", 2},
+//        {3540, "Chupetes", 1},
+//        {3540, "Chupetes", 3},
+//        {3540, "Chupetes", 1},
+//        {3641, "Lapices", 5},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3644, "Gomas", 10},
+//        {3645, "Borrador", 5}
+        ///DESORDENADO
         {3522, "Pañales", 1},
         {3522, "Pañales", 6},
         {3540, "Chupetes", 2},
-        {3540, "Chupetes", 1},
-        {3540, "Chupetes", 3},
+        {3522, "Pañales", 5},
         {3540, "Chupetes", 1},
         {3641, "Lapices", 5},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
+        {3540, "Chupetes", 1},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
+        {3540, "Chupetes", 3},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
         {3644, "Gomas", 10},
-        {3645, "Borrador", 5},
+        {3645, "Borrador", 5}
     };
     for(i=0;i<sizeof(pedidos)/sizeof(tPedido);i++){
         ponerEnLista(pLista, pedidos+i, sizeof(tPedido));

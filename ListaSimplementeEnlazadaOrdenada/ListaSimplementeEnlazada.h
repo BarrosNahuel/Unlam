@@ -29,5 +29,6 @@ int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam,tCMP);
 int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,int dup);
 int eliminarElementoPorClave(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp);
 int unirDuplicadosOrdenado(tLista *pLista, tCMP cmp, tUnir unir);
+void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir);
 
 #endif // LISTASIMPLEMENTEENLAZADA_H_INCLUDED
