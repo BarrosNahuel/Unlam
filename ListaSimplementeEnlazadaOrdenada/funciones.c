@@ -58,7 +58,7 @@ int compararPedidos(const void* dato1,const void* dato2){
     tPedido *ped1 = (tPedido*)dato1;
     tPedido *ped2 = (tPedido*)dato2;
 
-    return (ped1->cod == ped2->cod);
+    return (ped1->cod - ped2->cod);
 }
 int unirPedidos(void* orig, const void* dupl){
     tPedido *pedidoOrig = (tPedido*)orig;

@@ -62,7 +62,7 @@ int insertarSinDuplicados(tLista* pLista, const void* dato, unsigned tam, tCMP c
     tNodo* nodoNuevo;
     while(*pLista != NULL)
     {
-        if(cmp((*pLista)->dato, dato))
+        if(cmp((*pLista)->dato, dato)==0)
             return 0;
         pLista = &(*pLista)->sig;
     }
@@ -143,7 +143,7 @@ int unirDuplicadosOrdenado(tLista *pLista, tCMP cmp, tUnir unir){
         return 0;
     sig = (*pLista)->sig;
     while(sig){
-        if(cmp((*pLista)->dato, sig->dato)){
+        if(cmp((*pLista)->dato, sig->dato)==0){
             unir((*pLista)->dato, sig->dato);
             elim = sig;
             sig = elim->sig;
@@ -173,7 +173,7 @@ void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir){
 
         sig = &(*pLista)->sig;
         while(*sig){
-            if(cmp((*pLista)->dato, (*sig)->dato)){
+            if(cmp((*pLista)->dato, (*sig)->dato)==0){
                 unir((*pLista)->dato, (*sig)->dato);
                 elim = *sig;
                 *sig = elim->sig;
@@ -190,13 +190,66 @@ void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir){
                 flag = 0;
             }
         }
+        ///Avanzo pLista porque ya uní todos los de ese tipo, vuelvo a poner la flag en 1 por si tengo
+        ///que actualizar pLista->sig
         pLista = &(*pLista)->sig;
         flag = 1;
     }
 }
+///Este metodo de ordenamiento lo pense en base al metodo de burbujeo optimizado.
+void ordenarListaBurbujeo(tLista *pLista, tCMP cmp){
+    tNodo *nodoSig, *nodoAnt, *nodo = *pLista;
+    int desordenado = 1;
+    if(!(*pLista) || !(*pLista)->sig)
+        return;
+    while(desordenado){
+        nodo = *pLista;
+        nodoSig = nodo->sig;
+        desordenado = 0;
+        ///el primer caso es especial,  ya que no hay un nodo anterior
+        if(cmp(nodo->dato, nodoSig->dato)>0){
+            *pLista = nodoSig;
+            nodoAnt = nodoSig;
+            nodo->sig = nodoSig->sig;
+            nodoSig->sig = nodo;
+            desordenado = 1;
+        }
+        else{
+            nodoAnt = nodo;
+            nodo = nodo->sig;
+        }
+        nodoSig = nodo->sig;
 
+        while(nodoSig){
+            if(cmp(nodo->dato, nodoSig->dato)>0){
 
+                nodoAnt->sig = nodoSig;
+                nodo->sig = nodoSig->sig;
+                nodoSig->sig = nodo;
+                desordenado = 1;
+            }
+            else{
+                nodo = nodo->sig;
+            }
+            nodoSig = nodoSig->sig;
+            nodoAnt = nodoAnt->sig;
+        }
 
+    }
+}
+void ordenarListaTramposo(tLista* pLista, tCMP cmp){
+    tLista listaNueva;
+    tNodo *elim;
+    crearLista(&listaNueva);
+    while(*pLista){
+        insertarOrdenado(&listaNueva, (*pLista)->dato, (*pLista)->tam, cmp, 0);
+        elim = *pLista;
+        *pLista = elim->sig;
+        free(elim->dato);
+        free(elim);
+    }
+    *pLista = listaNueva;
+}
 
 
 
