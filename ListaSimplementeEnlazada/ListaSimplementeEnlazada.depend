@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1746546431 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\main.c
+	"ListaSimplementeEnlazada.h"
+
+1746544824 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\listasimplementeenlazada.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1746546536 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\listasimplementeenlazada.c
+	"ListaSimplementeEnlazada.h"
+
+1746546536 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\funciones.c
+	"ListaSimplementeEnlazada.h"
+

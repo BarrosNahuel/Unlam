@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1746546431 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\main.c
+	"ListaSimplementeEnlazada.h"
+
+1746544824 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\listasimplementeenlazada.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1746546536 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\listasimplementeenlazada.c
+	"ListaSimplementeEnlazada.h"
+
+1746546536 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazada\funciones.c
+	"ListaSimplementeEnlazada.h"
+
+1746629792 source:c:\users\laboratorios\desktop\listasimplementeenlazada\funciones.c
+	"ListaSimplementeEnlazada.h"
+
+1746629792 c:\users\laboratorios\desktop\listasimplementeenlazada\listasimplementeenlazada.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1746629080 source:c:\users\laboratorios\desktop\listasimplementeenlazada\listasimplementeenlazada.c
+	"ListaSimplementeEnlazada.h"
+
+1746629800 source:c:\users\laboratorios\desktop\listasimplementeenlazada\main.c
+	"ListaSimplementeEnlazada.h"
+
+1746806957 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\funciones.c
+	"funciones.h"
+
+1746819864 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1747090080 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.c
+	"ListaSimplementeEnlazada.h"
+
+1746833080 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\main.c
+	"ListaSimplementeEnlazada.h"
+	"funciones.h"
+
+1746657310 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\funciones.h
+	"ListaSimplementeEnlazada.h"
+
