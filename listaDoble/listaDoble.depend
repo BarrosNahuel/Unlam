@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1747838001 source:c:\users\laboratorios\desktop\listadoble\listadoble.c
+	"listaDoble.h"
+
+1747838043 c:\users\laboratorios\desktop\listadoble\listadoble.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1747838065 source:c:\users\laboratorios\desktop\listadoble\main.c
+	"listaDoble.h"
+
+1747864353 source:c:\users\compu\documents\github\listasimplementeenlazada\listadoble\funciones.c
+	"funciones.h"
+
+1747864353 c:\users\compu\documents\github\listasimplementeenlazada\listadoble\funciones.h
+	"listaDoble.h"
+
+1747865715 c:\users\compu\documents\github\listasimplementeenlazada\listadoble\listadoble.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1747865716 source:c:\users\compu\documents\github\listasimplementeenlazada\listadoble\listadoble.c
+	"listaDoble.h"
+
+1747865716 source:c:\users\compu\documents\github\listasimplementeenlazada\listadoble\main.c
+	"listaDoble.h"
+
