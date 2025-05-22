@@ -196,47 +196,36 @@ void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir){
         flag = 1;
     }
 }
-///Este metodo de ordenamiento lo pense en base al metodo de burbujeo optimizado.
-void ordenarListaBurbujeo(tLista *pLista, tCMP cmp){
-    tNodo *nodoSig, *nodoAnt, *nodo = *pLista;
-    int desordenado = 1;
-    if(!(*pLista) || !(*pLista)->sig)
-        return;
-    while(desordenado){
-        nodo = *pLista;
-        nodoSig = nodo->sig;
+
+void ordenarListaBurbujeo(tLista *pLista, tCMP cmp)
+{
+    tNodo** nodo;
+    tNodo* aux;
+    int desordenado;
+
+    do
+    {
         desordenado = 0;
-        ///el primer caso es especial,  ya que no hay un nodo anterior
-        if(cmp(nodo->dato, nodoSig->dato)>0){
-            *pLista = nodoSig;
-            nodoAnt = nodoSig;
-            nodo->sig = nodoSig->sig;
-            nodoSig->sig = nodo;
-            desordenado = 1;
-        }
-        else{
-            nodoAnt = nodo;
-            nodo = nodo->sig;
-        }
-        nodoSig = nodo->sig;
+        nodo = pLista;
 
-        while(nodoSig){
-            if(cmp(nodo->dato, nodoSig->dato)>0){
+        while(*nodo && (*nodo)->sig)
+        {
+            if(cmp((*nodo)->dato, (*nodo)->sig->dato) > 0)
+            {
+                // NODO -> B -> A -> C
+                aux = (*nodo)->sig; // AUX = A
+                (*nodo)->sig = aux->sig; // B -> C
+                aux->sig = *nodo; // A -> B
+                *nodo = aux; // NODO -> A
+                // NODO -> A -> B -> C
 
-                nodoAnt->sig = nodoSig;
-                nodo->sig = nodoSig->sig;
-                nodoSig->sig = nodo;
                 desordenado = 1;
             }
-            else{
-                nodo = nodo->sig;
-            }
-            nodoSig = nodoSig->sig;
-            nodoAnt = nodoAnt->sig;
+            nodo = &(*nodo)->sig;
         }
-
-    }
+    }while(desordenado);
 }
+
 void ordenarListaTramposo(tLista* pLista, tCMP cmp){
     tLista listaNueva;
     tNodo *elim;
