@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1747962013 source:c:\users\user\desktop\algoritmos y estructuras de datos\tpalgoritmos\main.c
+	"TPAlgoritmos.h"
+
+1747960926 c:\users\user\desktop\algoritmos y estructuras de datos\tpalgoritmos\tpalgoritmos.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"cola.h"
+
+1747961955 source:c:\users\user\desktop\algoritmos y estructuras de datos\tpalgoritmos\tpalgoritmos.c
+	"TPAlgoritmos.h"
+
+1747960926 c:\users\user\desktop\algoritmos y estructuras de datos\tpalgoritmos\cola.h
+	"TPAlgoritmos.h"
+
+1747962535 source:c:\users\user\desktop\algoritmos y estructuras de datos\tpalgoritmos\cola.c
+	"cola.h"
+
