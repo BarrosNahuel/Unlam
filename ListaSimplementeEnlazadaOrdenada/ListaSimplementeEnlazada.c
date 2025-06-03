@@ -226,19 +226,24 @@ void ordenarListaBurbujeo(tLista *pLista, tCMP cmp)
     }while(desordenado);
 }
 
-void ordenarListaTramposo(tLista* pLista, tCMP cmp){
-    tLista listaNueva;
-    tNodo *elim;
-    crearLista(&listaNueva);
-    while(*pLista){
-        insertarOrdenado(&listaNueva, (*pLista)->dato, (*pLista)->tam, cmp, 0);
-        elim = *pLista;
-        *pLista = elim->sig;
-        free(elim->dato);
-        free(elim);
-    }
-    *pLista = listaNueva;
+void mapListaInversoRec(tLista *pLista, void accion(tNodo *nodo)){
+    if(!(*pLista))
+        return;
+    mapListaInversoRec(&(*pLista)->sig, accion);
+    accion(*pLista);
 }
+void mapListaInversoIte(tLista *pLista, void accion(tNodo *nodo)){
+    tNodo *ini = *pLista, *fin = NULL;
+
+    while(ini != fin){
+        pLista = &ini;
+        while((*pLista)->sig != fin)
+            pLista = &(*pLista)->sig;
+        accion(*pLista);
+        fin = *pLista;
+    }
+}
+
 
 
 

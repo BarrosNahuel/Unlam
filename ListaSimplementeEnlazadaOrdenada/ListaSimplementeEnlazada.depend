@@ -30,15 +30,15 @@
 1746806957 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\funciones.c
 	"funciones.h"
 
-1746819864 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.h
+1748975814 c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1747164044 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.c
+1748976226 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\listasimplementeenlazada.c
 	"ListaSimplementeEnlazada.h"
 
-1746833080 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\main.c
+1748975921 source:c:\users\user\documents\github\listasimplementeenlazada\listasimplementeenlazadaordenada\main.c
 	"ListaSimplementeEnlazada.h"
 	"funciones.h"
 

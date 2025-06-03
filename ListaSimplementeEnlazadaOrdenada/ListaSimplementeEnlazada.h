@@ -30,6 +30,8 @@ int insertarOrdenado(tLista* pLista, const void* dato, unsigned tam, tCMP cmp,in
 int eliminarElementoPorClave(tLista* pLista,void* dato, unsigned tam,const void* clave, tCMP cmp);
 int unirDuplicadosOrdenado(tLista *pLista, tCMP cmp, tUnir unir);
 void unirDuplicadosDesordenado(tLista *pLista, tCMP cmp, tUnir unir);
-void ordenarListaTramposo(tLista* pLista, tCMP cmp);
 void ordenarListaBurbujeo(tLista *pLista, tCMP cmp);
+
+void mapListaInversoRec(tLista *pLista, void accion(tNodo *nodo));
+void mapListaInversoIte(tLista *pLista, void accion(tNodo *nodo));
 #endif // LISTASIMPLEMENTEENLAZADA_H_INCLUDED

@@ -7,14 +7,14 @@ int main()
     crearLista(&lista);
     if(!crearLotePruebas(&lista))
         return 1;
+    ///Punto 1:
     printf("<----------MOSTRANDO PEDIDOS---------->\n");
-    mapLista(&lista, mostrarPedidos);
+    mapListaInversoRec(&lista, mostrarPedidos);
     printf("<------------------------------------->\n");
 
-    ordenarListaBurbujeo(&lista, compararPedidos);
-
+    ///Punto 2:
     printf("<----------MOSTRANDO PEDIDOS---------->\n");
-    mapLista(&lista, mostrarPedidos);
+    mapListaInversoIte(&lista, mostrarPedidos);
     printf("<------------------------------------->\n");
     vaciarLista(&lista);
 
