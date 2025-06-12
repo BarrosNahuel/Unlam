@@ -188,13 +188,13 @@ int __cantNodosDesdeNivel(tArbol *p, int nivelActual, int nivelMax){
     return __cantNodosDesdeNivel(&(*p)->izq, nivelActual + 1, nivelMax) +
            __cantNodosDesdeNivel(&(*p)->der, nivelActual + 1, nivelMax);
 }
-tArbol buscarPorClave(tArbol *p, const void *dato, tCMP cmp){
+tArbol* buscarPorClave(tArbol *p, const void *dato, tCMP cmp){
     int res;
     if(!*p)
         return NULL;
     res = cmp(dato, (*p)->dato);
     if(res == 0)
-        return *p;
+        return p;
     else
         if(res<0)
             return buscarPorClave(&(*p)->izq, dato, cmp);
@@ -203,17 +203,20 @@ tArbol buscarPorClave(tArbol *p, const void *dato, tCMP cmp){
 }
 
 int cantNodosSubArbolDerClave(tArbol *p, const void *dato, tCMP cmp){
-    tArbol p2 = buscarPorClave(p, dato, cmp);
-    if(!p2)
+    tArbol *p2 = buscarPorClave(p, dato, cmp);
+    if(!*p2)
         return 0;
-    return contarNodos(&(*p2).der);
+    return contarNodos(&(*p2)->der);
 }
+///revisar que sea hoja
 int eliminarHoja(tArbol *p, const void *dato, tCMP cmp){
     int res;
     if(!*p)
         return 0;
     res = cmp(dato, (*p)->dato);
     if(res == 0){
+        if((*p)->der || (*p)->izq)
+            return 0;
         free((*p)->dato);
         free(*p);
         *p = NULL;
@@ -234,3 +237,61 @@ void eliminarArbol(tArbol *p){
     free((*p));
     (*p) = NULL;
 }
+
+void eliminarTodasLasHojas(tArbol *p){
+    if(!*p)
+        return;
+    if(!((*p)->der) && !((*p)->izq)){
+        free((*p)->dato);
+        free((*p));
+        (*p) = NULL;
+        ///return;?
+    }
+    eliminarTodasLasHojas(&(*p)->der);
+    eliminarTodasLasHojas(&(*p)->izq);
+}
+///agregar funciones de mayor y menor hoja
+int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCMP cmp){
+    tArbol *raizElim = buscarPorClave(p, clave, cmp);
+    tArbol *reemp = raizElim;
+    tNodo *elim;
+    if(!*raizElim)
+        return 0;
+    if(alturaDelArbol(&(*raizElim)->der) > alturaDelArbol(&(*raizElim)->izq)){
+        while((*reemp)->izq)
+            reemp = &(*reemp)->izq;
+    }
+    else{
+        while((*reemp)->der)
+            reemp = &(*reemp)->der;
+    }
+
+    memcpy((*raizElim)->dato, dato, MIN((*raizElim)->tam, tam));
+    free((*raizElim)->dato);
+    (*raizElim)->dato = (*reemp)->dato;
+    (*raizElim)->tam = (*reemp)->tam;
+
+    elim = *reemp;
+    if(elim->der)
+        *reemp = elim->der;
+    else
+        *reemp = elim->izq;
+    free(elim);
+    return 1;
+}
+
+///calcular la cantidad de registros,
+///indiceBal(ini, fin, raiz)
+///si fin < ini FIN
+///calculo medio
+/// acceso directo con el medio sobre el archivo
+/// leo el registro
+/// pongo esa clave en la pos en raiz
+/// indiceBal(ini, medio-1, raiz->izq)
+/// indiceBal(medio+1, fin, raiz->der)
+///
+
+
+
+
+

@@ -40,10 +40,12 @@ int cantNodosHastaNivel(tArbol *p, int nivel);///8
 int __cantNodosHastaNivel(tArbol *p, int nivelActual, int nivelMax);///8
 int cantNodosDesdeNivel(tArbol *p, int nivel);///9
 int __cantNodosDesdeNivel(tArbol *p, int nivelActual, int nivelMax);///9
-tArbol buscarPorClave(tArbol *p, const void *dato, tCMP cmp);///10
+tArbol* buscarPorClave(tArbol *p, const void *dato, tCMP cmp);///10
 int cantNodosSubArbolDerClave(tArbol *p, const void *dato, tCMP cmp);///11
 int eliminarHoja(tArbol *p, const void *dato, tCMP cmp);///12
 void eliminarArbol(tArbol *p);///13
+
+int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCMP cmp);
 //almacenarlo en un archivo y recuperarlo, contar las hojas,
 //contar nodos, contar hojas, contar las no hojas, contar nodos con hijos por izq, contar nodos que solo tienen hijos por izq,
 //altura del arbols, cantidad de nodos en un nivel, cantidad de nodos hasta un nivel, cantidad de nodos desde un nivel,

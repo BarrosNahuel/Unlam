@@ -21,3 +21,14 @@
 1749137551 source:c:\users\user\documents\github\listasimplementeenlazada\arbol\arbol.c
 	"arbol.h"
 
+1749651788 source:c:\users\compu\downloads\arbol\arbol\arbol.c
+	"arbol.h"
+
+1749651375 c:\users\compu\downloads\arbol\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1749651843 source:c:\users\compu\downloads\arbol\arbol\main.c
+	"arbol.h"
+
