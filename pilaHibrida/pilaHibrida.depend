@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1756249704 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\pilahibrida\funciones.c
+	"funciones.h"
+
+1756249284 c:\users\user\documents\github\listasimplementeenlazada\ayed\pilahibrida\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1756249750 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\pilahibrida\main.c
+	"funciones.h"
+
