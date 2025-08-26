@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1751408124 source:c:\users\user\documents\github\listasimplementeenlazada\estructurasdedatos\funciones.c
+	"funciones.h"
+
+1751407939 c:\users\user\documents\github\listasimplementeenlazada\estructurasdedatos\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1751408156 source:c:\users\user\documents\github\listasimplementeenlazada\estructurasdedatos\main.c
+	"funciones.h"
+

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "funciones.h"
 
 #define MIN(x,y) (((x)<(y))?(x):(y))
 #define MAY(x,y) (((x)>(y))?(x):(y))
@@ -16,16 +17,21 @@ typedef struct sNodo{
     struct sNodo* der;
 }tNodo;
 
+typedef struct{
+    void *clave;
+    unsigned pos;
+}tIndice;
+
 typedef tNodo* tArbol;
 typedef int (*tCMP)(const void *dato1, const void *dato2);
+typedef unsigned (*tLEER)(void **dst, void* src, unsigned pos, void *param);
 
 void crearArbol(tArbol *p);
 int insertarArbolIte(tArbol *p, const void *dato, unsigned tam, tCMP cmp);
 int insertarArbolRec(tArbol *p, const void *dato, unsigned tam, tCMP cmp);
-void recorrerPreOrden(tArbol *p, void accion(void* dato));
-void recorrerInOrden(tArbol *p, void accion(void* dato));
-void recorrerPosOrden(tArbol *p, void accion(void* dato));
-void contarNodosTrampa(tArbol* p, int* cant);
+void recorrerPreOrden(tArbol *p, void accion(const void* dato));
+void recorrerInOrden(tArbol *p, void accion(const void* dato));
+void recorrerPosOrden(tArbol *p, void accion(const void* dato));
 
 int contarNodos(tArbol* p); ///1
 int contarHojas(tArbol *p);///2
@@ -46,13 +52,16 @@ int eliminarHoja(tArbol *p, const void *dato, tCMP cmp);///12
 void eliminarArbol(tArbol *p);///13
 
 int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCMP cmp);
-//almacenarlo en un archivo y recuperarlo, contar las hojas,
-//contar nodos, contar hojas, contar las no hojas, contar nodos con hijos por izq, contar nodos que solo tienen hijos por izq,
-//altura del arbols, cantidad de nodos en un nivel, cantidad de nodos hasta un nivel, cantidad de nodos desde un nivel,
-//buscar una clave(devuelve punt a punt o arbol mejor), cantidad de nodos del subarbol derecho de una clave, eliminar una hoja,
-//eliminar el arbol,
+tArbol* menorHoja(tArbol *p);
+tArbol* mayorHoja(tArbol *p);
 
-int compararInt(const void* dato1, const void *dato2);
-void mostrarInt(void* dato);
+int cargarArbolDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribir(void *dst, const void* src, unsigned tam));
+int cargarArbolIndiceDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribirIndice(void *dst, const void* src, unsigned tam, int pos));
+void pasarArbolArchivoBin(tArbol *p, FILE *pf);
+int cargarArbolDesdeDatosOrdenados(tArbol *p, void *src, tLEER leer, int li, int ls, void *param);
+
+
+tNodo* dondeInsertar(tArbol *p, const void *dato, unsigned tam, tCMP cmp);
+
 
 #endif // ARBOL_H_INCLUDED

@@ -66,39 +66,26 @@ int insertarArbolRec(tArbol *p, const void *dato, unsigned tam, tCMP cmp){
     return 1;
 }
 
-int compararInt(const void* dato1, const void *dato2){
-    return *(int*)dato1 - *(int*)dato2;
-}
-void recorrerPreOrden(tArbol *p, void accion(void* dato)){
+void recorrerPreOrden(tArbol *p, void accion(const void* dato)){
     if(!*p)
         return;
     accion((*p)->dato);
     recorrerPreOrden(&(*p)->izq, accion);
     recorrerPreOrden(&(*p)->der, accion);
 }
-void recorrerInOrden(tArbol *p, void accion(void* dato)){
+void recorrerInOrden(tArbol *p, void accion(const void* dato)){
     if(!*p)
         return;
     recorrerInOrden(&(*p)->izq, accion);
     accion((*p)->dato);
     recorrerInOrden(&(*p)->der, accion);
 }
-void recorrerPosOrden(tArbol *p, void accion(void* dato)){
+void recorrerPosOrden(tArbol *p, void accion(const void* dato)){
     if(!*p)
         return;
     recorrerPosOrden(&(*p)->izq, accion);
     recorrerPosOrden(&(*p)->der, accion);
     accion((*p)->dato);
-}
-void mostrarInt(void* dato){
-    printf("%d ", *(int*)dato);
-}
-void contarNodosTrampa(tArbol *p, int* cant){
-    if(!*p)
-        return;
-    (*cant)++;
-    contarNodosTrampa(&(*p)->izq, cant);
-    contarNodosTrampa(&(*p)->der, cant);
 }
 
 int contarNodos(tArbol* p){
@@ -208,7 +195,7 @@ int cantNodosSubArbolDerClave(tArbol *p, const void *dato, tCMP cmp){
         return 0;
     return contarNodos(&(*p2)->der);
 }
-///revisar que sea hoja
+
 int eliminarHoja(tArbol *p, const void *dato, tCMP cmp){
     int res;
     if(!*p)
@@ -250,24 +237,38 @@ void eliminarTodasLasHojas(tArbol *p){
     eliminarTodasLasHojas(&(*p)->der);
     eliminarTodasLasHojas(&(*p)->izq);
 }
-///agregar funciones de mayor y menor hoja
+tArbol* menorHoja(tArbol *p){
+    if(!*p)
+        return NULL;
+    while((*p)->izq)
+        p = &(*p)->izq;
+    return p;
+}
+
+tArbol* mayorHoja(tArbol *p){
+    if(!*p)
+        return NULL;
+    while((*p)->der)
+        p = &(*p)->der;
+    return p;
+}
+
 int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCMP cmp){
     tArbol *raizElim = buscarPorClave(p, clave, cmp);
     tArbol *reemp = raizElim;
     tNodo *elim;
+
     if(!*raizElim)
         return 0;
-    if(alturaDelArbol(&(*raizElim)->der) > alturaDelArbol(&(*raizElim)->izq)){
-        while((*reemp)->izq)
-            reemp = &(*reemp)->izq;
-    }
-    else{
-        while((*reemp)->der)
-            reemp = &(*reemp)->der;
-    }
+
+    if(alturaDelArbol(&(*raizElim)->der) > alturaDelArbol(&(*raizElim)->izq))
+        reemp = menorHoja(raizElim);
+    else
+        reemp = mayorHoja(raizElim);
 
     memcpy((*raizElim)->dato, dato, MIN((*raizElim)->tam, tam));
     free((*raizElim)->dato);
+
     (*raizElim)->dato = (*reemp)->dato;
     (*raizElim)->tam = (*reemp)->tam;
 
@@ -277,19 +278,106 @@ int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCM
     else
         *reemp = elim->izq;
     free(elim);
+
     return 1;
 }
 
-///calcular la cantidad de registros,
-///indiceBal(ini, fin, raiz)
-///si fin < ini FIN
-///calculo medio
-/// acceso directo con el medio sobre el archivo
-/// leo el registro
-/// pongo esa clave en la pos en raiz
-/// indiceBal(ini, medio-1, raiz->izq)
-/// indiceBal(medio+1, fin, raiz->der)
-///
+///Crea un arbol a partir de archivo, en el arbol se guarda la clave y su posicion en el archivo
+//int cargarArbolDesdeDatosDesordenados(tArbol *p, FILE *pf, unsigned tam, tCMP cmp, void escribir(void *dst, const void* src, unsigned pos)){
+int cargarArbolDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribir(void *dst, const void* src, unsigned tam)){
+    tArbol *raiz = p;
+    int res;
+    void *dato = malloc(tam);
+    if(!dato)
+        return 0;
+    fread(dato, tam, 1, (FILE*)src);
+    (*p) = (tNodo*)malloc(sizeof(tNodo));
+    if(!(*p) || !((*p)->tam = escribir(&(*p)->dato, dato, tam))){
+        free(*p);
+        return 0;
+    }
+    while(fread(dato, tam, 1, (FILE*)src)){
+        p = raiz;
+        while(*p && res!=0){
+            res = cmp(dato, (*p)->dato);
+            if(res == 0)
+                break;
+            if(res<0)
+                p = &(*p)->izq;
+            else
+                p = &(*p)->der;
+            }
+        if(res != 0){
+            (*p) = (tNodo*)malloc(sizeof(tNodo));
+            if(!(*p) || !((*p)->tam = escribir(&(*p)->dato, dato, tam))){
+                free(*p);
+                return 0;
+            }
+        }
+    }
+    free(src);
+    return 1;
+}
+
+int cargarArbolIndiceDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribirIndice(void *dst, const void* src, int pos)){
+    tArbol *raiz = p;
+    int res, pos = 0;
+    void *dato = malloc(tam);
+    if(!src)
+        return 0;
+    fread(dato, tam, 1, (FILE*)src);
+    (*p) = (tNodo*)malloc(sizeof(tNodo));
+    if(!(*p) || !((*p)->tam = escribirIndice(&(*p)->dato, src, pos))){
+        free(*p);
+        return 0;
+    }
+    while(fread(dato, tam, 1, (FILE*)src)){
+        pos++;
+        p = raiz;
+        while(*p && res!=0){
+            res = cmp(dato, (*p)->dato);
+            if(res == 0)
+                break;
+            if(res<0)
+                p = &(*p)->izq;
+            else
+                p = &(*p)->der;
+            }
+        if(res != 0){
+            (*p) = (tNodo*)malloc(sizeof(tNodo));
+            if(!(*p) || !((*p)->tam = escribirIndice(&(*p)->dato, src, pos))){
+                free(*p);
+                return 0;
+            }
+        }
+    }
+    free(src);
+    return 1;
+}
+
+void pasarArbolArchivoBin(tArbol *p, FILE *pf){
+    if(!*p)
+        return;
+    pasarArbolArchivoBin(&(*p)->izq, pf);
+    pasarArbolArchivoBin(&(*p)->der, pf);
+    fwrite((*p)->dato, (*p)->tam, 1, pf);
+}
+
+int cargarArbolDesdeDatosOrdenados(tArbol *p, void *src, tLEER leer, int li, int ls, void *param){
+    int med = (ls+li)/2;
+    if(ls<li)
+        return 1;
+    (*p) = (tNodo*)malloc(sizeof(tNodo));
+    if(!(*p) || !((*p)->tam = leer(&(*p)->dato, src, med, param))){
+        free(*p);
+        return 0;
+    }
+    (*p)->izq = NULL;
+    (*p)->der = NULL;
+    if(!cargarArbolDesdeDatosOrdenados(&(*p)->izq, src, leer, li, med-1, param))
+        return 0;
+    return cargarArbolDesdeDatosOrdenados(&(*p)->der, src, leer, med+1, ls, param);
+}
 
 
 

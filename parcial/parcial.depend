@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1750805820 source:c:\users\user\documents\github\listasimplementeenlazada\parcial\cola.c
+	"cola.h"
+
+1750805034 c:\users\user\documents\github\listasimplementeenlazada\parcial\cola.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1750805820 source:c:\users\user\documents\github\listasimplementeenlazada\parcial\funciones.c
+	"funciones.h"
+
+1750805097 c:\users\user\documents\github\listasimplementeenlazada\parcial\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"cola.h"
+
+1750805449 source:c:\users\user\documents\github\listasimplementeenlazada\parcial\main.c
+	"funciones.h"
+

@@ -15,27 +15,37 @@
 */
 int main()
 {
+    int cantReg;
+    FILE *pf = fopen("archivoDesordenado.dat", "w+b"), *indice = fopen("personas.idx", "w+b");
+    tArbol raiz;
+    crearArbol(&raiz);
+    if(!pf || !indice)
+        return 1;
+    cantReg = crearLote(pf);
+    cargarArbolIndiceDesdeDatosDesordenados(&raiz, pf, sizeof(tPersona), compararPersonas, escribirPersonaIndice);
+    recorrerPreOrden(&raiz, mostrarPersonas);
+    pasarArbolArchivoBin(&raiz, indice);
+    eliminarArbol(&raiz);
+    rewind(pf); rewind(indice);
+    cargarArbolDesdeDatosOrdenados(&raiz, indice, leerArchivoBin, 0, cantReg-1, sizeof(tIndice));
+    return 0;
+}
+/*
     int vec[] = {100, 200, 50, 25, 70, 150, 400, 10, 20, 60, 80, 160, 300, 450, 5, 23, 90}, i, clave = 25;
-    tArbol raiz, *subarbol;
+    tArbol raiz;
     crearArbol(&raiz);
     for(i=0;i<sizeof(vec)/sizeof(int);i++){
         insertarArbolRec(&raiz, vec+i, sizeof(int), compararInt);
     }
     printf("Recorrido en Pre-Orden:");
     recorrerPreOrden(&raiz, mostrarInt);
-    SALTO/*
-    printf("Recorrido en In-Orden:");
-    recorrerInOrden(&raiz, mostrarInt);
     SALTO
-    printf("Recorrido en Pos-Orden:");
-    recorrerPosOrden(&raiz, mostrarInt);
-    SALTO*/
 
     eliminarPorClave(&raiz, &i, sizeof(int), &clave, compararInt);
 
     printf("Recorrido en Pre-Orden:");
     recorrerPreOrden(&raiz, mostrarInt);
-/*
+
     printf("Cantidad de nodos: %d\n", contarNodos(&raiz));
     printf("Cantidad de hojas: %d\n", contarHojas(&raiz));
     printf("Cantidad de NO hojas: %d\n", contarNoHojas(&raiz));
@@ -60,5 +70,3 @@ int main()
     eliminarArbol(&raiz);
     printf("Arbol:");
     recorrerInOrden(&raiz, mostrarInt);*/
-    return 0;
-}
