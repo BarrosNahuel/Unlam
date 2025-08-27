@@ -11,8 +11,8 @@ void vaciarPila(tPila *p){
         p->tope += sizeof(tDato);
     }
 }
-int pilaLlena(const tPila *p){
-    return (p->tope<sizeof(void*));
+int pilaLlena(const tPila *p, unsigned tam){
+    return (p->tope<sizeof(tDato));
 }
 int pilaVacia(const tPila *p){
     return (p->tope==TAM_PILA);

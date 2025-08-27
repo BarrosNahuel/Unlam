@@ -20,7 +20,7 @@ typedef struct{
 
 void crearPila(tPila *p);
 void vaciarPila(tPila *p);
-int pilaLlena(const tPila *p);
+int pilaLlena(const tPila *p, unsigned tam);
 int pilaVacia(const tPila *p);
 int apilar(tPila *p, const void *dato, unsigned tam);
 int desapilar(tPila *p, void *dato, unsigned tam);
