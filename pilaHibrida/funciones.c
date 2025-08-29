@@ -1,57 +1,48 @@
 #include "funciones.h"
 
-void crearPila(tPila *p){
-    p->tope = TAM_PILA;
+void crearLote(){
+    tEstudiante est[] = {{"Nahuel", 100, "Ingenieria"},
+                       {"Benjamin", 200, "Ingenieria"},
+                       {"Maria", 300, "Medicina"},
+                       {"Ramiro", 400, "Sociales"},
+                       {"Lucas", 500, "Economicas"},
+                       {"Jazmin", 600, "Sociales"},
+                       {"Morena", 700, "Ingenieria"},
+                       {"Nicolas", 800, "Medicina"},
+                       {"Jorge", 900, "Economicas"},
+                       {"Agustin", 1000, "Sociales"},
+                    };
+    FILE *pf = fopen("prueba.dat", "wb");
+    if(!pf)
+        return;
+    fwrite(est, sizeof(est), 1, pf);
+    fclose(pf);
 }
-void vaciarPila(tPila *p){
-    tDato *aux;
-    while(p->tope < TAM_PILA){
-        aux = (tDato*)(p->pila + p->tope);
-        free(aux->dato);
-        p->tope += sizeof(tDato);
+int cargarPilaDesdeArchBin(tPila *p, const char *nombArch, unsigned tam){
+    void *aux = malloc(tam);
+    FILE *pf = fopen(nombArch, "rb");
+
+    if(!pf){
+        free(aux);
+        return 0;
     }
-}
-int pilaLlena(const tPila *p, unsigned tam){
-    return (p->tope<sizeof(tDato));
-}
-int pilaVacia(const tPila *p){
-    return (p->tope==TAM_PILA);
-}
-int apilar(tPila *p, const void *dato, unsigned tam){
-    tDato aux;
-    if(p->tope == 0)
+    if(!aux){
+        fclose(pf);
         return 0;
+    }
 
-    aux.dato = malloc(tam);
-    if(!aux.dato)
+    while(fread(aux, tam, 1, pf) && !pilaLlena(p, tam)){
+        apilar(p, aux, tam);
+    }
+    free(aux);
+    if(feof(pf)){
+        fclose(pf);
+        return 1;
+    }
+    else{
+        fclose(pf);
         return 0;
-    aux.tam = tam;
-    memcpy(aux.dato, dato, tam);
-
-    p->tope -= sizeof(tDato);
-    memcpy(p->pila + p->tope, &aux, sizeof(tDato));
-    return 1;
-}
-int desapilar(tPila *p, void *dato, unsigned tam){
-    tDato *aux;
-    if(p->tope == TAM_PILA)
-        return 0;
-
-    aux = (tDato*)(p->pila + p->tope);
-    memcpy(dato, aux->dato, MIN(tam, aux->tam));
-    p->tope += sizeof(tDato);
-
-    return 1;
-}
-int verTope(const tPila *p, void *dato, unsigned tam){
-    tDato *aux;
-    if(p->tope == TAM_PILA)
-        return 0;
-
-    aux = (tDato*)(p->pila + p->tope);
-    memcpy(dato, aux->dato, MIN(tam, aux->tam));
-
-    return 1;
+    }
 }
 
 

@@ -2,30 +2,26 @@
 
 int main()
 {
-    int v[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, i, dato;
+    tEstudiante est;
     tPila pila;
+    crearLote();
     crearPila(&pila);
     if(pilaVacia(&pila)){
         printf("Pila vacia\n");
     }
-    for(i=0;i<10;i++){
-        apilar(&pila, v+i, sizeof(int));
-    }
-    if(pilaLlena(&pila)){
+    cargarPilaDesdeArchBin(&pila, "prueba.dat", sizeof(tEstudiante));
+    if(pilaLlena(&pila, sizeof(tEstudiante))){
         printf("Pila llena\n");
     }
-    for(i=0;i<10;i++){
-        desapilar(&pila, &dato, sizeof(int));
-        printf("%d\n", dato);
+
+    while(!pilaVacia(&pila)){
+        desapilar(&pila, &est, sizeof(tEstudiante));
+        printf("\nNombre: %s\nLegajo: %d\nDepartamento: %s\n", est.nombre, est.leg, est.dpto);
+        puts("|------------------------|");
     }
 
-    if(pilaVacia(&pila)){
-        printf("Pila vacia\n");
-    }
-    for(i=0;i<10;i++){
-        apilar(&pila, v+i, sizeof(int));
-    }
-    if(pilaLlena(&pila)){
+    cargarPilaDesdeArchBin(&pila, "prueba.txt", sizeof(tEstudiante));
+    if(pilaLlena(&pila, sizeof(tEstudiante))){
         printf("Pila llena\n");
     }
     vaciarPila(&pila);
