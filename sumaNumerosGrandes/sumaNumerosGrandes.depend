@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1757466930 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\sumanumerosgrandes\funciones.c
+	"funciones.h"
+
+1757466930 c:\users\user\documents\github\listasimplementeenlazada\ayed\sumanumerosgrandes\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"pila.h"
+
+1757461638 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\sumanumerosgrandes\main.c
+	"funciones.h"
+
+1757459508 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\sumanumerosgrandes\piladinamica.c
+	"pila.h"
+
+1757459508 c:\users\user\documents\github\listasimplementeenlazada\ayed\sumanumerosgrandes\pila.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
