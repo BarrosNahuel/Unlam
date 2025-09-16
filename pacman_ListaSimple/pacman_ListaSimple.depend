@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1757981636 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\pacman_listasimple\funciones.c
+	"funciones.h"
+
+1757978685 c:\users\user\documents\github\listasimplementeenlazada\ayed\pacman_listasimple\funciones.h
+	"lista.h"
+
+1757972840 c:\users\user\documents\github\listasimplementeenlazada\ayed\pacman_listasimple\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1757981357 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\pacman_listasimple\lista.c
+	"lista.h"
+
+1757980807 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\pacman_listasimple\main.c
+	"funciones.h"
+
