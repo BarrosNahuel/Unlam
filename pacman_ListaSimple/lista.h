@@ -17,7 +17,7 @@ typedef tNodo* tLista;
 typedef int (*CMP)(const void*, const void*);
 
 void crearLista(tLista *p);
-int insertarOrdenado(tLista *p, const void *dato, unsigned tam, CMP cmp, int duplicado);
+int insertarOrdenado(tLista *p, const void *dato, unsigned tam, CMP cmp, int duplicado, void acc(void*, const void*));
 int sacarDeLista(tLista *p, void *dato, unsigned tam);
 void mapLista(tLista *p, void accion(void*));
 void vaciarLista(tLista *p);

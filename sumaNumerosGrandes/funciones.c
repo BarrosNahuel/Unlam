@@ -9,7 +9,7 @@ void crearArchivosPrueba(){
         return;
     }
     srand(time(NULL));
-    for(i=0;i<32;i++){
+    for(i=0;i<1000;i++){
         fprintf(pf1, "%d", rand()%10);
         fprintf(pf2, "%d", rand()%10);
     }

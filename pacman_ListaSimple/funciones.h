@@ -17,25 +17,34 @@
                     ">"
 #define OPCIONES_DUPL "ab"
 
-typedef struct{
-    int dia;
-    int mes;
-    int anio;
-}tFecha;
+#define MENSAJE_ACUM "ELIJA UNA DE LAS SIGUIENTES OPCIONES:\n"  \
+                    "a. Acumular elementos duplicado.\n"        \
+                    "b. No acumular elementos duplicados.\n"    \
+                    ">"
+#define OPCIONES_ACUM "ab"
+
+#define SIN_DUPL 0
+#define CON_DUPL 1
+#define CON_ACUM 'a'
+#define SIN_ACUM 'b'
+
 typedef struct{
     char nom[25];
-    char sexo;
-    tFecha fecNac;
-}tPersona;
+    int cant;
+    char marca[25];
+}tProducto;
 
 void crearLoteSimple();
 void crearLoteEstructura();
 char menu(const char *msj, const char *opc);
-int cargarListaArchTxtOrd(tLista *p, const char *nombArch, CMP cmp ,int dupl);
-int cargarListaArchBinOrd(tLista *p, const char *nombArch, CMP cmp,int dupl);
+int cargarListaArchTxtOrd(tLista *p, const char *nombArch, CMP cmp ,int dupl, void acc(void*, const void*));
+int cargarListaArchBinOrd(tLista *p, const char *nombArch, CMP cmp,int dupl, void acc(void*, const void*));
 void mostrarFloat(void *d);
-void mostrarPersona(void *d);
+void mostrarProductos(void *d);
 int compararFloat(const void *d1, const void *d2);
-int compararPersonas(const void *d1, const void *d2);
+int compararProductos(const void *d1, const void *d2);
+
+void accFloat(void* acum, const void* dato);
+void accProductos(void* acum, const void* dato);
 
 #endif // FUNCIONES_H_INCLUDED

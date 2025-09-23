@@ -2,7 +2,7 @@
 void crearLista(tLista *p){
     *p = NULL;
 }
-int insertarOrdenado(tLista *p, const void *dato, unsigned tam, CMP cmp, int duplicado){
+int insertarOrdenado(tLista *p, const void *dato, unsigned tam, CMP cmp, int duplicado, void acc(void *acum, const void *dupl)){
     tNodo *nue;
     int comp = 1;
 
@@ -10,6 +10,9 @@ int insertarOrdenado(tLista *p, const void *dato, unsigned tam, CMP cmp, int dup
         p = &(*p)->sig;
     }
     if(!duplicado && (comp == 0)){
+        if(acc){
+            acc((*p)->dato, dato);
+        }
         return 0;
     }
 

@@ -13,22 +13,23 @@ void crearLoteSimple(){
     fclose(pf);
 }
 void crearLoteEstructura(){
-    tPersona personas[] = {{"Nahuel Barros", 'H', {15,7,2004}},//<--
-                           {"Anahi Rodriguez", 'M', {12,2,2005}},
-                           {"Roberto Gonzalez", 'H', {14,8,2003}},
-                           {"Anahi Rodriguez", 'M', {12,2,2005}},
-                           {"Marcos Mondello", 'H', {5,5,1999}},
-                           {"Gabriela Ocaña", 'M', {3,10,1984}},//<----
-                           {"Tomas Fernandez", 'H', {15,7,2004}},//<--
-                           {"Julieta Venegas", 'M', {15,7,2004}},//<--
-                           {"Marcos Mondello", 'H', {5,5,1999}},
-                           {"Francisca Robledo", 'M', {3,10,1984}},//<----
+    tProducto productos[] = {{"Pañales", 200, "Pampers"},
+                            {"Vendas", 50, "Everlast"},
+                            {"Pañales", 20, "Huggies"},
+                            {"Pilas", 10, "Andasiempre"},
+                            {"Cepillo de dientes", 150, "Colgate"},
+                            {"Vendas", 25, "Everlast"},
+                            {"Cepillo de dientes elect", 10, "Colgate"},
+                            {"Pasta de dientes", 70, "Colgate"},
+                            {"Pañales", 100, "Pampers"},
+                            {"Pilas", 30, "Duracell"},
+                            {"Cepillo de dientes elect", 5, "Colgate"},
                             };
     FILE *pf = fopen("lote.dat", "wb");
     if(!pf)
         return;
 
-    fwrite(&personas, sizeof(personas), 1, pf);
+    fwrite(&productos, sizeof(productos), 1, pf);
 
     fclose(pf);
 }
@@ -42,7 +43,7 @@ char menu(const char *msj, const char *opc){
 
     return res;
 }
-int cargarListaArchTxtOrd(tLista *p, const char *nombArch, CMP cmp ,int dupl){
+int cargarListaArchTxtOrd(tLista *p, const char *nombArch, CMP cmp ,int dupl, void acc(void*, const void*)){
     char linea[10];
     float dato;
     FILE *pf = fopen(nombArch, "rt");
@@ -50,18 +51,18 @@ int cargarListaArchTxtOrd(tLista *p, const char *nombArch, CMP cmp ,int dupl){
         return 0;
     while(fgets(linea, sizeof(linea), pf)){
         sscanf(linea, "%f", &dato);
-        insertarOrdenado(p, &dato, sizeof(float), cmp, dupl);
+        insertarOrdenado(p, &dato, sizeof(float), cmp, dupl, acc);
     }
     fclose(pf);
     return 1;
 }
-int cargarListaArchBinOrd(tLista *p, const char *nombArch, CMP cmp, int dupl){
-    tPersona pers;
+int cargarListaArchBinOrd(tLista *p, const char *nombArch, CMP cmp, int dupl, void acc(void*, const void*)){
+    tProducto prod;
     FILE *pf = fopen(nombArch, "rt");
     if(!pf)
         return 0;
-    while(fread(&pers, sizeof(tPersona), 1, pf)){
-        insertarOrdenado(p, &pers, sizeof(tPersona), cmp, dupl);
+    while(fread(&prod, sizeof(tProducto), 1, pf)){
+        insertarOrdenado(p, &prod, sizeof(tProducto), cmp, dupl, acc);
     }
     fclose(pf);
     return 1;
@@ -69,26 +70,31 @@ int cargarListaArchBinOrd(tLista *p, const char *nombArch, CMP cmp, int dupl){
 void mostrarFloat(void *d){
     printf("%.2f\n", *(float*)d);
 }
-void mostrarPersona(void *d){
-    tPersona *p = (tPersona*)d;
-    printf("%s, %c, %d/%d/%d\n", p->nom, p->sexo, p->fecNac.dia, p->fecNac.mes, p->fecNac.anio);
+void mostrarProductos(void *d){
+    tProducto *p = (tProducto*)d;
+    printf("%-25s %-4d %-25s\n", p->nom, p->cant, p->marca);
 }
 int compararFloat(const void *d1, const void *d2){
     return (*(float*)d1 - *(float*)d2);
 }
-int compararPersonas(const void *d1, const void *d2){
-    tPersona *per1 = (tPersona*)d1, *per2 = (tPersona*)d2;
+int compararProductos(const void *d1, const void *d2){
+    tProducto *prod1 = (tProducto*)d1, *prod2 = (tProducto*)d2;
+    int res;
 
-    if(per1->sexo != per2->sexo)
-        return (per1->sexo - per2->sexo);
-    if((per1->fecNac.anio - per2->fecNac.anio))
-        return (per1->fecNac.anio - per2->fecNac.anio);
-    if((per1->fecNac.mes - per2->fecNac.mes))
-        return (per1->fecNac.mes - per2->fecNac.mes);
+    if((res = strcmpi(prod1->nom, prod2->nom)) == 0){
+        res = strcmpi(prod1->marca, prod2->marca);
+    }
 
-    return (per1->fecNac.dia - per2->fecNac.dia);
+    return res;
 }
-
+void accFloat(void* acum, const void* dato){
+    float *numAcum = (float*)acum, *numDato = (float*)dato;
+    *numAcum += *numDato;
+}
+void accProductos(void* acum, const void* dato){
+    tProducto *prodAcum = (tProducto*)acum, *prodDato = (tProducto*)dato;
+    prodAcum->cant += prodDato->cant;
+}
 
 
 
