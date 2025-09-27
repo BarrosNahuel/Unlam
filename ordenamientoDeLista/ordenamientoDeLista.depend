@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1758929780 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\lista.c
+	"lista.h"
+
+1758669132 c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1758669226 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\main.c
+	"lista.h"
+	<time.h>
+
