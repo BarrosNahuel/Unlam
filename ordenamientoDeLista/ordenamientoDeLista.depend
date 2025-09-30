@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1758929780 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\lista.c
+1759188205 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\lista.c
 	"lista.h"
 
 1758669132 c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\lista.h
@@ -7,7 +7,13 @@
 	<stdlib.h>
 	<string.h>
 
-1758669226 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\main.c
+1759192610 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\main.c
+	"funciones.h"
+
+1759195167 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\funciones.c
+	"funciones.h"
+
+1759194978 c:\users\user\documents\github\listasimplementeenlazada\ayed\ordenamientodelista\funciones.h
 	"lista.h"
 	<time.h>
 

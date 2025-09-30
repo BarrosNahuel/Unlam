@@ -1,26 +1,24 @@
-#include "lista.h"
-#include <time.h>
-
-int compararInt(const void *d1, const void *d2){
-    return (*(int*)d1 - *(int*)d2);
-}
-void mostrarInt(const void *d){
-    printf("[%d]", *(int*)d);
-}
+#include "funciones.h"
 
 int main()
 {
     tLista lista;
-    int dato, i;
     crearLista(&lista);
-    srand(time(NULL));
-    for(i = 0; i < 10; i++){
-        dato = rand()%10;
-        insertarEnLista(&lista, &dato, sizeof(int));
-    }
+
+    crearLoteInt(&lista);
     mapLista(&lista, mostrarInt);
     printf("\n");
     ordenarListaSeleccion(&lista, compararInt);
     mapLista(&lista, mostrarInt);
+    vaciarLista(&lista);
+    printf("\n");
+
+    crearLoteTxt();
+    cargarListaTxt(&lista, "lote.txt", sizeof(tPersona), trozar);
+    mapLista(&lista, mostrarPersonas);
+    printf("\n");
+    ordenarListaSeleccion(&lista, compararPersonas);
+    mapLista(&lista, mostrarPersonas);
+    vaciarLista(&lista);
     return 0;
 }

@@ -1,0 +1,9 @@
+Barros Nahuel            M5526454
+Vazquez Benjamin         M12345678
+Barros Alejandro         M23456789
+Alegre Julieta           F34567890
+Romero Fernando          M45678901
+Moreno Agustina          F56789012
+Felicitas Guerrero       F67890123
+San Martin               M78901234
+Zabatella Mariano        M89012345

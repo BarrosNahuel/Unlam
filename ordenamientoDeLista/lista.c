@@ -65,21 +65,23 @@ void mapLista(tLista *p, void acc(const void *d)){
 //    }
 //}
 void ordenarListaSeleccion(tLista *p, CMP cmp){
-    tNodo *pri, *aux;
+    tNodo **min, **sig, *aux;
     while(*p){
-        pri = *p;
-        aux = (*p)->sig;
+        min = p;
+        sig = &(*p)->sig;
 
-        while(aux){
-            if(cmp((*p)->dato, aux->dato) > 0)
-                *p = aux; //<--- aux = *p p=
-            aux = aux->sig;
+        while(*sig){
+            if(cmp((*min)->dato, (*sig)->dato) > 0)
+                min = sig;
+            sig = &(*sig)->sig;
         }
 
-        if(*p != pri){
-            aux = (*p)->sig;
-            (*p)->sig = pri;
-            *p = aux;
+        if(p != min){
+            aux = (*min)->sig;
+            (*min)->sig = *p;
+            *p = *min;
+            *min = aux;
+
         }
 
         p = &(*p)->sig;
