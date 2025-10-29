@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1759289283 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\listacircular\listacircular.c
+	"listaCircular.h"
+
+1759289392 c:\users\user\documents\github\listasimplementeenlazada\ayed\listacircular\listacircular.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1759288680 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\listacircular\main.c
+	"listaCircular.h"
+

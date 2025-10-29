@@ -3,18 +3,23 @@
 
 #include "arbol.h"
 
+#define SALTO printf("\n"); \
+
 typedef struct{
     int dni;
     char nya[21];
     char sex;
 }tPersona;
+typedef struct{
+    int dni;
+    long offset;
+}tIndicePersona;
 
-int crearLote(FILE *p);
-int compararPersonas(const void *d1, const void *d2);
-void mostrarPersonas(const void *p);
-int compararInt(const void* dato1, const void *dato2);
-void mostrarInt(void* dato);
-void escribirPersonaIndice(void *dst, const void* src, unsigned pos);
-unsigned leerArchivoBin(void **dst, void* src, unsigned pos, void *param);
-
+int leerDatosArchivoPer(void* dest, FILE *arch);
+int leerDatosArchivoIdx(void* dest, FILE *arch);
+int compararInt(const void*d1, const void*d2);
+int compararIndPer(const void*d1, const void*d2);
+void mostrarInt(void *d);
+void mostrarPersonaIdx(void *d);
+void crearLote();
 #endif // FUNCIONES_H_INCLUDED

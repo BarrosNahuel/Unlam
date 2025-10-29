@@ -1,72 +1,23 @@
 #include "arbol.h"
-/*
-                          |100|
-                     /           \
-                    /             \
-                |50|              |200|
-               /    \          /        \
-            |25|    |70|    |150|        |400|
-           /       /    \       \       /     \
-        |10|     |60|   |80|    |160| |300|   |450|
-       /    \               \
-     |5|    |20|            |90|
-                \
-                |23|
-*/
+#include "funciones.h"
+
 int main()
 {
-    int cantReg;
-    FILE *pf = fopen("archivoDesordenado.dat", "w+b"), *indice = fopen("personas.idx", "w+b");
-    tArbol raiz;
-    crearArbol(&raiz);
-    if(!pf || !indice)
-        return 1;
-    cantReg = crearLote(pf);
-    cargarArbolIndiceDesdeDatosDesordenados(&raiz, pf, sizeof(tPersona), compararPersonas, escribirPersonaIndice);
-    recorrerPreOrden(&raiz, mostrarPersonas);
-    pasarArbolArchivoBin(&raiz, indice);
-    eliminarArbol(&raiz);
-    rewind(pf); rewind(indice);
-    cargarArbolDesdeDatosOrdenados(&raiz, indice, leerArchivoBin, 0, cantReg-1, sizeof(tIndice));
+    int clave, dato, altura, i;
+    FILE *pf;
+    tArbol arbol;
+
+    crearLote();
+    crearArbolB(&arbol);
+    crearArchivoIndice("datos.dat", "datos.idx", sizeof(tIndicePersona), leerDatosArchivoPer, compararIndPer);
+    pf = fopen("datos.idx", "r+b");
+    if(!pf) return 1;
+    cargarArbolDesdeArchivoOrdenado(&arbol, pf, sizeof(tIndicePersona), leerDatosArchivoIdx);
+
+    altura = alturaArbol(&arbol);
+    for(i=0;i<altura;i++){
+        verNodosDeNivel(&arbol, i, mostrarPersonaIdx);
+        SALTO
+    }
     return 0;
 }
-/*
-    int vec[] = {100, 200, 50, 25, 70, 150, 400, 10, 20, 60, 80, 160, 300, 450, 5, 23, 90}, i, clave = 25;
-    tArbol raiz;
-    crearArbol(&raiz);
-    for(i=0;i<sizeof(vec)/sizeof(int);i++){
-        insertarArbolRec(&raiz, vec+i, sizeof(int), compararInt);
-    }
-    printf("Recorrido en Pre-Orden:");
-    recorrerPreOrden(&raiz, mostrarInt);
-    SALTO
-
-    eliminarPorClave(&raiz, &i, sizeof(int), &clave, compararInt);
-
-    printf("Recorrido en Pre-Orden:");
-    recorrerPreOrden(&raiz, mostrarInt);
-
-    printf("Cantidad de nodos: %d\n", contarNodos(&raiz));
-    printf("Cantidad de hojas: %d\n", contarHojas(&raiz));
-    printf("Cantidad de NO hojas: %d\n", contarNoHojas(&raiz));
-    printf("Cantidad de nodos con hijos por izq: %d\n", cantNodosConHijosPorIzq(&raiz));
-    printf("Cantidad de nodos solo con hijos por izq: %d\n", cantNodosSoloConHijosPorIzq(&raiz));
-    printf("Altura del arbol: %d\n", alturaDelArbol(&raiz));
-    printf("Cantidad de nodos en el nivel 3: %d\n", cantNodosEnNivel(&raiz, 3));
-    printf("Cantidad de nodos hasta el nivel 3: %d\n", cantNodosHastaNivel(&raiz, 3));
-    printf("Cantidad de nodos desde el nivel 3: %d\n", cantNodosDesdeNivel(&raiz, 3));
-    printf("Buscar por clave y mostrar arbol: (clave = 200) ");
-    subarbol = buscarPorClave(&raiz, &clave, compararInt);
-    recorrerInOrden(subarbol, mostrarInt);
-    SALTO
-    printf("Cantidade de nodos del subarbol derecho de la clave 200: %d\n", cantNodosSubArbolDerClave(&raiz, &clave, compararInt));
-    if(eliminarHoja(&raiz, &hoja, compararInt)){
-        printf("Se elimino la hoja con valor %d\n", hoja);
-        recorrerInOrden(&raiz, mostrarInt);
-    }
-    else
-        printf("No se elimino la hoja con valor %d", hoja);
-    SALTO
-    eliminarArbol(&raiz);
-    printf("Arbol:");
-    recorrerInOrden(&raiz, mostrarInt);*/

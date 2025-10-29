@@ -1,385 +1,311 @@
 #include "arbol.h"
 
-
-void crearArbol(tArbol *p){
+void crearArbolB(tArbol *p){
     *p = NULL;
 }
-int insertarArbolIte(tArbol *p, const void *dato, unsigned tam, tCMP cmp){
-    int res;
-    while(*p){
-        res = cmp(dato, (*p)->dato);
-        if(res<0){
-            p = &(*p)->izq;
-        }
-        else{
-            if(res>0){
-                p = &(*p)->der;
-            }
-            else{
-                return 0;
-            }
-        }
-    }
-    (*p) = (tNodo*) malloc(sizeof(tNodo));
-    if(!(*p))
-        return 0;
-    (*p)->dato = malloc(tam);
-    if(!(*p)->dato){
-        free(*p);
-        return 0;
-    }
-    memcpy((*p)->dato, dato, tam);
-    (*p)->tam = tam;
-    (*p)->izq = NULL;
-    (*p)->der = NULL;
-    return 1;
-}
-
-int insertarArbolRec(tArbol *p, const void *dato, unsigned tam, tCMP cmp){
-    int res;
-    if(*p){
-        res = cmp(dato, (*p)->dato);
-        if(res<0){
-            return insertarArbolRec(&(*p)->izq, dato, tam, cmp);
-        }
-        else{
-            if(res>0){
-                return insertarArbolRec(&(*p)->der, dato, tam, cmp);
-            }
-            else{
-                return 0;
-            }
-        }
-    }
-    (*p) = (tNodo*) malloc(sizeof(tNodo));
-    if(!(*p))
-        return 0;
-    (*p)->dato = malloc(tam);
-    if(!(*p)->dato){
-        free(*p);
-        return 0;
-    }
-    memcpy((*p)->dato, dato, tam);
-    (*p)->tam = tam;
-    (*p)->izq = NULL;
-    (*p)->der = NULL;
-    return 1;
-}
-
-void recorrerPreOrden(tArbol *p, void accion(const void* dato)){
-    if(!*p)
-        return;
-    accion((*p)->dato);
-    recorrerPreOrden(&(*p)->izq, accion);
-    recorrerPreOrden(&(*p)->der, accion);
-}
-void recorrerInOrden(tArbol *p, void accion(const void* dato)){
-    if(!*p)
-        return;
-    recorrerInOrden(&(*p)->izq, accion);
-    accion((*p)->dato);
-    recorrerInOrden(&(*p)->der, accion);
-}
-void recorrerPosOrden(tArbol *p, void accion(const void* dato)){
-    if(!*p)
-        return;
-    recorrerPosOrden(&(*p)->izq, accion);
-    recorrerPosOrden(&(*p)->der, accion);
-    accion((*p)->dato);
-}
-
-int contarNodos(tArbol* p){
-    if(!*p)
-        return 0;
-    return contarNodos(&(*p)->izq) + contarNodos(&(*p)->der) + 1;
-}
-
-int contarHojas(tArbol *p){
-    if(!*p)
-        return 0;
-    if(!((*p)->izq) && !((*p)->der))
-        return 1;
-    return contarHojas(&(*p)->der) + contarHojas(&(*p)->izq);
-}
-
-int contarNoHojas(tArbol *p){
-    if(!*p)
-        return 0;
-    if(!((*p)->izq) && !((*p)->der))
-        return 0;
-    return contarNoHojas(&(*p)->der) + contarNoHojas(&(*p)->izq) + 1;
-}
-int cantNodosConHijosPorIzq(tArbol *p){
-    if(!*p)
-        return 0;
-    if((*p)->izq)
-        return cantNodosConHijosPorIzq(&(*p)->izq) + cantNodosConHijosPorIzq(&(*p)->der) + 1;
-    return cantNodosConHijosPorIzq(&(*p)->der);
-}
-
-int cantNodosSoloConHijosPorIzq(tArbol *p){
-    if(!*p)
-        return 0;
-    if(!(*p)->der && (*p)->izq)
-        return cantNodosSoloConHijosPorIzq(&(*p)->izq) + 1;
-    return cantNodosSoloConHijosPorIzq(&(*p)->izq) + cantNodosSoloConHijosPorIzq(&(*p)->der);
-}
-
-int alturaDelArbol(tArbol *p){
-    return __alturaDelArbol(p, 0);
-
-}
-
-int __alturaDelArbol(tArbol *p, int nivel){
-    if(!*p)
-        return nivel;
-    return MAY(__alturaDelArbol(&(*p)->izq, nivel+1),__alturaDelArbol(&(*p)->der, nivel+1));
-}
-
-int cantNodosEnNivel(tArbol *p, int nivel){
-    return __cantNodosEnNivel(p, 1, nivel);
-}
-int __cantNodosEnNivel(tArbol *p, int nivelActual, int nivelMax){
-    if(!*p)
-        return 0;
-    if(nivelActual == nivelMax)
-        return 1;
-    return __cantNodosEnNivel(&(*p)->izq, nivelActual+1, nivelMax) +
-           __cantNodosEnNivel(&(*p)->der, nivelActual+1, nivelMax);
-}
-
-int cantNodosHastaNivel(tArbol *p, int nivel){
-    return __cantNodosHastaNivel(p, 1, nivel);
-}
-
-int __cantNodosHastaNivel(tArbol *p, int nivelActual, int nivelMax){
-    if(!*p)
-        return 0;
-    if(nivelActual <= nivelMax){
-        return __cantNodosHastaNivel(&(*p)->izq, nivelActual + 1, nivelMax) +
-               __cantNodosHastaNivel(&(*p)->der, nivelActual + 1, nivelMax) + 1;
-    }
-    return 0;
-}
-
-int cantNodosDesdeNivel(tArbol *p, int nivel){
-    return __cantNodosDesdeNivel(p, 1, nivel);
-}
-int __cantNodosDesdeNivel(tArbol *p, int nivelActual, int nivelMax){
-    if(!*p)
-        return 0;
-    if(nivelActual >= nivelMax){
-        return __cantNodosDesdeNivel(&(*p)->izq, nivelActual + 1, nivelMax) +
-               __cantNodosDesdeNivel(&(*p)->der, nivelActual + 1, nivelMax) + 1;
-    }
-    return __cantNodosDesdeNivel(&(*p)->izq, nivelActual + 1, nivelMax) +
-           __cantNodosDesdeNivel(&(*p)->der, nivelActual + 1, nivelMax);
-}
-tArbol* buscarPorClave(tArbol *p, const void *dato, tCMP cmp){
-    int res;
-    if(!*p)
-        return NULL;
-    res = cmp(dato, (*p)->dato);
-    if(res == 0)
-        return p;
-    else
-        if(res<0)
-            return buscarPorClave(&(*p)->izq, dato, cmp);
-        else
-            return buscarPorClave(&(*p)->der, dato, cmp);
-}
-
-int cantNodosSubArbolDerClave(tArbol *p, const void *dato, tCMP cmp){
-    tArbol *p2 = buscarPorClave(p, dato, cmp);
-    if(!*p2)
-        return 0;
-    return contarNodos(&(*p2)->der);
-}
-
-int eliminarHoja(tArbol *p, const void *dato, tCMP cmp){
-    int res;
-    if(!*p)
-        return 0;
-    res = cmp(dato, (*p)->dato);
-    if(res == 0){
-        if((*p)->der || (*p)->izq)
+int insertarEnArbolBRec(tArbol *p, void *dato, unsigned tam, CMP cmp){
+    int comp = 0;
+    if(!*p){
+        *p = (tNodo*)malloc(sizeof(tNodo));
+        if(!*p) return 0;
+        (*p)->dato = malloc(tam);
+        if((*p)->dato == NULL){
+            free(*p);
             return 0;
-        free((*p)->dato);
-        free(*p);
-        *p = NULL;
+        }
+        memcpy((*p)->dato, dato, tam);
+        (*p)->tam = tam;
+        (*p)->der = NULL;
+        (*p)->izq = NULL;
         return 1;
     }
-    else
-        if(res < 0)
-            return eliminarHoja(&(*p)->izq, dato, cmp);
-        else
-            return eliminarHoja(&(*p)->der, dato, cmp);
-}
-void eliminarArbol(tArbol *p){
-    if(!*p)
-        return;
-    eliminarArbol(&(*p)->izq);
-    eliminarArbol(&(*p)->der);
-    free((*p)->dato);
-    free((*p));
-    (*p) = NULL;
-}
 
-void eliminarTodasLasHojas(tArbol *p){
-    if(!*p)
-        return;
-    if(!((*p)->der) && !((*p)->izq)){
-        free((*p)->dato);
-        free((*p));
-        (*p) = NULL;
-        ///return;?
-    }
-    eliminarTodasLasHojas(&(*p)->der);
-    eliminarTodasLasHojas(&(*p)->izq);
-}
-tArbol* menorHoja(tArbol *p){
-    if(!*p)
-        return NULL;
-    while((*p)->izq)
-        p = &(*p)->izq;
-    return p;
-}
-
-tArbol* mayorHoja(tArbol *p){
-    if(!*p)
-        return NULL;
-    while((*p)->der)
-        p = &(*p)->der;
-    return p;
-}
-
-int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCMP cmp){
-    tArbol *raizElim = buscarPorClave(p, clave, cmp);
-    tArbol *reemp = raizElim;
-    tNodo *elim;
-
-    if(!*raizElim)
+    if((comp = cmp(dato, (*p)->dato)) == 0){
         return 0;
+    }
+    else{
+        if(comp < 0){
+            return insertarEnArbolBRec(&(*p)->izq, dato, tam, cmp);
+        }
+        else{
+            return insertarEnArbolBRec(&(*p)->der, dato, tam, cmp);
+        }
+    }
+}
+int insertarEnArbolBIt(tArbol *p, void *dato, unsigned tam, CMP cmp){
+    int comp = 1;
+    while(*p){
+        if((comp = cmp(dato, (*p)->dato)) < 0)
+            p = &(*p)->izq;
+        else
+            p = &(*p)->der;
+        if(comp == 0) return 0;
+    }
 
-    if(alturaDelArbol(&(*raizElim)->der) > alturaDelArbol(&(*raizElim)->izq))
-        reemp = menorHoja(raizElim);
-    else
-        reemp = mayorHoja(raizElim);
+    *p = (tNodo*)malloc(sizeof(tNodo));
+    if(!*p) return 0;
+    (*p)->dato = malloc(tam);
+    if((*p)->dato == NULL){
+        free(*p);
+        return 0;
+    }
+    memcpy((*p)->dato, dato, tam);
+    (*p)->tam = tam;
+    (*p)->der = NULL;
+    (*p)->izq = NULL;
+    //(*p)->der = (*p)->izq = NULL;
+    return 1;
 
-    memcpy((*raizElim)->dato, dato, MIN((*raizElim)->tam, tam));
+}
+void recorrerArbolInOrden(tArbol *p, void acc(void*)){
+    if(!*p) return;
+    recorrerArbolInOrden(&(*p)->izq, acc);
+    acc((*p)->dato);
+    recorrerArbolInOrden(&(*p)->der, acc);
+}
+void recorrerArbolPosOrden(tArbol *p, void acc(void*)){
+    if(!*p) return;
+    recorrerArbolPosOrden(&(*p)->izq, acc);
+    recorrerArbolPosOrden(&(*p)->der, acc);
+    acc((*p)->dato);
+}
+void recorrerArbolPreOrden(tArbol *p, void acc(void*)){
+    if(!*p) return;
+    acc((*p)->dato);
+    recorrerArbolPreOrden(&(*p)->izq, acc);
+    recorrerArbolPreOrden(&(*p)->der, acc);
+}
+int contarHojas(tArbol *p){
+    if(!*p) return 0;
+    if((*p)->izq == NULL && (*p)->der == NULL) return 1;
+    return (contarHojas(&(*p)->izq) + contarHojas(&(*p)->der));
+}
+int contarNoHojas(tArbol *p){
+    if(!*p) return 0;
+    if((*p)->izq == NULL && (*p)->der == NULL) return 0;
+    return (1 + contarHojas(&(*p)->izq) + contarHojas(&(*p)->der));
+}
+int alturaArbol(tArbol *p){
+    if(!*p)return 0;
+    return (1 + MAX(alturaArbol(&(*p)->der), alturaArbol(&(*p)->izq)));
+}
+//int alturaArbol(tArbol *p){
+//    int altDer, altIzq;
+//    if(!*p)return 0;
+//    altDer = alturaArbol(&(*p)->der);
+//    altIzq = alturaArbol(&(*p)->izq);
+//    return (1 + MAX(altIzq, altDer));
+//}
+///Incluido el nivel
+void verHastaNivel(tArbol *p, int nivel, void acc(void *)){
+    if(!*p || nivel == -1) return;
+    acc((*p)->dato);
+    verHastaNivel(&(*p)->izq, nivel - 1, acc);
+    verHastaNivel(&(*p)->der, nivel - 1, acc);
+}
+void verNodosDeNivel(tArbol *p, int nivel, void acc(void *)){
+    if(!*p) return;
+    if(nivel == 0){
+        acc((*p)->dato);
+        return;
+    }
+    verNodosDeNivel(&(*p)->izq, nivel - 1, acc);
+    verNodosDeNivel(&(*p)->der, nivel - 1, acc);
+}
+///Incluido el nivel
+void verNodosDesdeNivel(tArbol *p, int nivel, void acc(void*)){
+    if(!*p) return;
+    if(nivel <= 0) acc((*p)->dato);
+    verNodosDesdeNivel(&(*p)->izq, nivel - 1, acc);
+    verNodosDesdeNivel(&(*p)->der, nivel - 1, acc);
+}
+tArbol* mayorHojaIt(tArbol *p){
+    if(!*p) return NULL;
+    while((*p)->der || (*p)->izq){
+        while((*p)->der)
+            p = &(*p)->der;
+        if((*p)->izq)
+            p = &(*p)->izq;
+    }
+    return p;
+}
+tArbol* mayorHojaRec(tArbol *p){
+    if(!*p) return NULL;
+    if(!(*p)->der && !(*p)->izq) return p;
+    if(!(*p)->der) p = &(*p)->izq;
+    return mayorHojaRec(&(*p)->der);
+}
+tArbol* menorHojaIt(tArbol *p){
+    if(!*p) return NULL;
+    while((*p)->der || (*p)->izq){
+        while((*p)->izq)
+            p = &(*p)->izq;
+        if((*p)->der)
+            p = &(*p)->der;
+    }
+    return p;
+}
+tArbol* menorHojaRec(tArbol *p){
+    if(!*p) return NULL;
+    if(!(*p)->der && !(*p)->izq) return p;
+    if(!(*p)->izq) p = &(*p)->der;
+    return menorHojaRec(&(*p)->izq);
+}
+int contarNodos(tArbol *p){
+    if(!*p) return 0;
+    return (1 + contarNodos(&(*p)->der) + contarNodos(&(*p)->izq));
+}
+int esArbolBalanceado(tArbol *p){
+    int altDer, altIzq;
+    if(!*p) return 1;
+    altIzq = alturaArbol(&(*p)->izq);
+    altDer = alturaArbol(&(*p)->der);
+    if(altIzq != altDer && altIzq != (altDer + 1) && (altIzq + 1) != altDer)
+        return 0;
+    return (esArbolBalanceado(&(*p)->izq) && esArbolBalanceado(&(*p)->der));
+}
+
+int esArbolCompleto(tArbol *p){
+    if(!*p) return 1;
+    if(alturaArbol(&(*p)->izq) != alturaArbol(&(*p)->der)) return 0;
+    return (esArbolCompleto(&(*p)->izq) && esArbolCompleto(&(*p)->der));
+}
+
+//int esArbolAVL(tArbol *p){
+//
+//}
+void vaciarArbol(tArbol *p){
+    if(!*p) return;
+    vaciarArbol(&(*p)->izq);
+    vaciarArbol(&(*p)->der);
+    free((*p)->dato);
+    free(*p);
+}
+tArbol* buscarNodo(tArbol *p, const void *clave, CMP cmp){
+    int comp;
+    if(!*p) return NULL;
+    if((comp = cmp(clave, (*p)->dato)) == 0){
+        return p;
+    }
+    else{
+        if(comp < 0){
+            return buscarNodo(&(*p)->izq, clave, cmp);
+        }
+        else{
+            return buscarNodo(&(*p)->der, clave, cmp);
+        }
+    }
+}
+tArbol* mayorNodo(tArbol *p){
+    if(!*p) return NULL;
+    if(!(*p)->der) return p;
+    return mayorNodo(&(*p)->der);
+}
+tArbol* menorNodo(tArbol *p){
+    if(!*p) return NULL;
+    if(!(*p)->izq) return p;
+    return menorNodo(&(*p)->izq);
+}
+int eliminarNodo(tArbol *p,const void *clave, void *dato, unsigned tam, CMP cmp){
+    tArbol *raizElim;
+
+    if(!*p) return 0;
+    raizElim = buscarNodo(p, clave, cmp);
+    if(!raizElim) return 0;
+
+    memcpy(dato, (*raizElim)->dato, MIN((*raizElim)->tam, tam));
     free((*raizElim)->dato);
 
-    (*raizElim)->dato = (*reemp)->dato;
-    (*raizElim)->tam = (*reemp)->tam;
-
-    elim = *reemp;
-    if(elim->der)
-        *reemp = elim->der;
+    if((*raizElim)->izq == NULL && (*raizElim)->der == NULL)
+        *raizElim = NULL;
     else
-        *reemp = elim->izq;
-    free(elim);
-
+        eliminarRaiz(raizElim);
     return 1;
 }
 
-///Crea un arbol a partir de archivo, en el arbol se guarda la clave y su posicion en el archivo
-//int cargarArbolDesdeDatosDesordenados(tArbol *p, FILE *pf, unsigned tam, tCMP cmp, void escribir(void *dst, const void* src, unsigned pos)){
-int cargarArbolDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribir(void *dst, const void* src, unsigned tam)){
-    tArbol *raiz = p;
-    int res;
-    void *dato = malloc(tam);
-    if(!dato)
-        return 0;
-    fread(dato, tam, 1, (FILE*)src);
-    (*p) = (tNodo*)malloc(sizeof(tNodo));
-    if(!(*p) || !((*p)->tam = escribir(&(*p)->dato, dato, tam))){
-        free(*p);
+void eliminarRaiz(tArbol *p){
+    tArbol *reemp;
+    reemp = (alturaArbol(&(*p)->der) > alturaArbol(&(*p)->izq) ? menorNodo(&(*p)->der) : mayorNodo(&(*p)->izq));
+    (*p)->dato = (*reemp)->dato;
+    (*p)->tam = (*reemp)->tam;
+
+    *reemp = (*reemp)->der ? (*reemp)->der : (*reemp)->izq;
+
+}
+int cargarArbolDesdeArchivoDesordenado(tArbol *p, FILE *pf, unsigned tam, LEER leer, CMP cmp){
+    void *info;
+    int leido;
+    info = malloc(tam);
+    if(!info){
         return 0;
     }
-    while(fread(dato, tam, 1, (FILE*)src)){
-        p = raiz;
-        while(*p && res!=0){
-            res = cmp(dato, (*p)->dato);
-            if(res == 0)
-                break;
-            if(res<0)
-                p = &(*p)->izq;
-            else
-                p = &(*p)->der;
-            }
-        if(res != 0){
-            (*p) = (tNodo*)malloc(sizeof(tNodo));
-            if(!(*p) || !((*p)->tam = escribir(&(*p)->dato, dato, tam))){
-                free(*p);
-                return 0;
-            }
-        }
+    while((leido = leer(info, pf)) > 0){
+        insertarEnArbolBRec(p, info, leido, cmp);
     }
-    free(src);
+    free(info);
     return 1;
 }
 
-int cargarArbolIndiceDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribirIndice(void *dst, const void* src, int pos)){
-    tArbol *raiz = p;
-    int res, pos = 0;
-    void *dato = malloc(tam);
-    if(!src)
-        return 0;
-    fread(dato, tam, 1, (FILE*)src);
-    (*p) = (tNodo*)malloc(sizeof(tNodo));
-    if(!(*p) || !((*p)->tam = escribirIndice(&(*p)->dato, src, pos))){
-        free(*p);
-        return 0;
-    }
-    while(fread(dato, tam, 1, (FILE*)src)){
-        pos++;
-        p = raiz;
-        while(*p && res!=0){
-            res = cmp(dato, (*p)->dato);
-            if(res == 0)
-                break;
-            if(res<0)
-                p = &(*p)->izq;
-            else
-                p = &(*p)->der;
-            }
-        if(res != 0){
-            (*p) = (tNodo*)malloc(sizeof(tNodo));
-            if(!(*p) || !((*p)->tam = escribirIndice(&(*p)->dato, src, pos))){
-                free(*p);
-                return 0;
-            }
-        }
-    }
-    free(src);
-    return 1;
-}
-
-void pasarArbolArchivoBin(tArbol *p, FILE *pf){
-    if(!*p)
-        return;
-    pasarArbolArchivoBin(&(*p)->izq, pf);
-    pasarArbolArchivoBin(&(*p)->der, pf);
+int cargarArchivoDesdeArbol(tArbol *p, FILE *pf){
+    if(!*p)return 0;
+    cargarArchivoDesdeArbol(&(*p)->izq, pf);
     fwrite((*p)->dato, (*p)->tam, 1, pf);
+    cargarArchivoDesdeArbol(&(*p)->der, pf);
+    return 1;
 }
 
-int cargarArbolDesdeDatosOrdenados(tArbol *p, void *src, tLEER leer, int li, int ls, void *param){
-    int med = (ls+li)/2;
-    if(ls<li)
-        return 1;
-    (*p) = (tNodo*)malloc(sizeof(tNodo));
-    if(!(*p) || !((*p)->tam = leer(&(*p)->dato, src, med, param))){
-        free(*p);
+int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigned tam, LEER leer, CMP cmp){
+    tArbol arbol;
+    FILE *pDat, *pInd;
+
+    pDat = fopen(nombArchDat, "rb");
+    if(!pDat) return 0;
+    pInd = fopen(nombArchInd, "wb");
+    if(!pInd){
+        fclose(pDat);
         return 0;
     }
-    (*p)->izq = NULL;
-    (*p)->der = NULL;
-    if(!cargarArbolDesdeDatosOrdenados(&(*p)->izq, src, leer, li, med-1, param))
-        return 0;
-    return cargarArbolDesdeDatosOrdenados(&(*p)->der, src, leer, med+1, ls, param);
+    crearArbolB(&arbol);
+
+    cargarArbolDesdeArchivoDesordenado(&arbol, pDat, tam, leer, cmp);
+    cargarArchivoDesdeArbol(&arbol, pInd);
+
+    fclose(pDat);
+    fclose(pInd);
+    vaciarArbol(&arbol);
+    return 1;
 }
+int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, LEER leer){
+    int cantReg;
+    if(!pf) return 0;
+    fseek(pf, 0L, SEEK_END);
+    cantReg = (ftell(pf)/tam) - 1;
 
+    return __cargarArbolDesdeArchivoOrdenado(p, pf, tam, 0, cantReg, leer);
+}
+int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li, int ls, LEER leer){
+    int med = (li+ls)/2;
 
+    if(li > ls) return 1;
+
+    (*p) = (tNodo*)malloc(sizeof(tNodo));
+    if(!(*p)) return 0;
+
+    fseek(pf, med * tam, SEEK_SET);
+
+    (*p)->tam = leer((*p)->dato, pf);
+    (*p)->der = NULL;
+    (*p)->izq = NULL;
+
+    __cargarArbolDesdeArchivoOrdenado(&(*p)->izq, pf, tam, li, med - 1, leer);
+    __cargarArbolDesdeArchivoOrdenado(&(*p)->izq, pf, tam, med + 1, ls, leer);
+
+    return 1;
+}
+//int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER leer){
+//    tArbol *pBuscado = buscarNodo(p, clave, cmp);
+//
+//}
 
 
 

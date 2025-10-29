@@ -4,64 +4,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "funciones.h"
 
-#define MIN(x,y) (((x)<(y))?(x):(y))
-#define MAY(x,y) (((x)>(y))?(x):(y))
-#define SALTO printf("\n");
+#define MIN(x,y) ((x)<(y)?(x):(y))
+#define MAX(x,y) ((x)>(y)?(x):(y))
 
 typedef struct sNodo{
     void *dato;
     unsigned tam;
-    struct sNodo* izq;
-    struct sNodo* der;
+    struct sNodo *izq;
+    struct sNodo *der;
 }tNodo;
 
-typedef struct{
-    void *clave;
-    unsigned pos;
-}tIndice;
-
 typedef tNodo* tArbol;
-typedef int (*tCMP)(const void *dato1, const void *dato2);
-typedef unsigned (*tLEER)(void **dst, void* src, unsigned pos, void *param);
+typedef int (*CMP)(const void*, const void*);
+typedef int (*LEER)(void* dest, FILE *arch);
 
-void crearArbol(tArbol *p);
-int insertarArbolIte(tArbol *p, const void *dato, unsigned tam, tCMP cmp);
-int insertarArbolRec(tArbol *p, const void *dato, unsigned tam, tCMP cmp);
-void recorrerPreOrden(tArbol *p, void accion(const void* dato));
-void recorrerInOrden(tArbol *p, void accion(const void* dato));
-void recorrerPosOrden(tArbol *p, void accion(const void* dato));
+void crearArbolB(tArbol *p);
+int insertarEnArbolBRec(tArbol *p, void *dato, unsigned tam, CMP cmp);
+int insertarEnArbolBIt(tArbol *p, void *dato, unsigned tam, CMP cmp);
+void recorrerArbolInOrden(tArbol *p, void acc(void*));
+void recorrerArbolPosOrden(tArbol *p, void acc(void*));
+void recorrerArbolPreOrden(tArbol *p, void acc(void*));
+int contarHojas(tArbol *p);
+int contarNoHojas(tArbol *p);
+int contarNodos(tArbol *p);
+int alturaArbol(tArbol *p);
+tArbol* mayorHojaIt(tArbol *p);
+tArbol* mayorHojaRec(tArbol *p);
+tArbol* menorHojaIt(tArbol *p);
+tArbol* menorHojaRec(tArbol *p);
 
-int contarNodos(tArbol* p); ///1
-int contarHojas(tArbol *p);///2
-int contarNoHojas(tArbol *p);///3
-int cantNodosConHijosPorIzq(tArbol *p);///4
-int cantNodosSoloConHijosPorIzq(tArbol *p);///5
-int alturaDelArbol(tArbol *p);///6
-int __alturaDelArbol(tArbol *p, int nivel);///6
-int cantNodosEnNivel(tArbol *p, int nivel);///7
-int __cantNodosEnNivel(tArbol *p, int nivelActual, int nivelMax);///7
-int cantNodosHastaNivel(tArbol *p, int nivel);///8
-int __cantNodosHastaNivel(tArbol *p, int nivelActual, int nivelMax);///8
-int cantNodosDesdeNivel(tArbol *p, int nivel);///9
-int __cantNodosDesdeNivel(tArbol *p, int nivelActual, int nivelMax);///9
-tArbol* buscarPorClave(tArbol *p, const void *dato, tCMP cmp);///10
-int cantNodosSubArbolDerClave(tArbol *p, const void *dato, tCMP cmp);///11
-int eliminarHoja(tArbol *p, const void *dato, tCMP cmp);///12
-void eliminarArbol(tArbol *p);///13
+void verHastaNivel(tArbol *p, int nivel, void acc(void *));
+void verNodosDeNivel(tArbol *p, int nivel, void acc(void *));
+void verNodosDesdeNivel(tArbol *p, int nivel, void acc(void*));
+int esArbolCompleto(tArbol *p);
+int esArbolBalanceado(tArbol *p);
+tArbol* buscarNodo(tArbol *p, const void *clave, CMP cmp);
+tArbol* mayorNodo(tArbol *p);
+tArbol* menorNodo(tArbol *p);
+int eliminarNodo(tArbol *p,const void *clave, void *dato, unsigned tam, CMP cmp);
+void eliminarRaiz(tArbol *p);
 
-int eliminarPorClave(tArbol *p, void* dato, unsigned tam, const void *clave, tCMP cmp);
-tArbol* menorHoja(tArbol *p);
-tArbol* mayorHoja(tArbol *p);
-
-int cargarArbolDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribir(void *dst, const void* src, unsigned tam));
-int cargarArbolIndiceDesdeDatosDesordenados(tArbol *p, void *src, unsigned tam, tCMP cmp, unsigned escribirIndice(void *dst, const void* src, unsigned tam, int pos));
-void pasarArbolArchivoBin(tArbol *p, FILE *pf);
-int cargarArbolDesdeDatosOrdenados(tArbol *p, void *src, tLEER leer, int li, int ls, void *param);
-
-
-tNodo* dondeInsertar(tArbol *p, const void *dato, unsigned tam, tCMP cmp);
-
-
+int cargarArbolDesdeArchivoDesordenado(tArbol *p, FILE *pf, unsigned tam, LEER leer, CMP cmp);
+int cargarArchivoDesdeArbol(tArbol *p, FILE *pf);
+int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigned tam, LEER leer, CMP cmp);
+int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, LEER leer);
+int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li, int ls, LEER leer);
+//int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, );
+///Contar Hojas, Contar No Hojas, Cuantos Nodos Tiene Un Arbol, Clave Mayor, Clave Menor, Cantidad Nodos
+///Del Sub Arbol Derecho Que Cumple Una Condicion, Cantidad De Nodos Que Cumplen Una Condicion a Partir De Una Clave,
+///Promedio de los Nodos Con Clave Parcial, Buscar Un Valor No Clave Del Arbol Con Accion (Pueden Ser Varios).
 #endif // ARBOL_H_INCLUDED

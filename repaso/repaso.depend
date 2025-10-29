@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1761089037 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\repaso\funciones.c
+	"funciones.h"
+
+1761088639 c:\users\user\documents\github\listasimplementeenlazada\ayed\repaso\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
+1761088673 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\repaso\main.c
+	"funciones.h"
+

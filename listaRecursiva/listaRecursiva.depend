@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1760394694 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\listarecursiva\lista.c
+	"lista.h"
+
+1760731661 c:\users\user\documents\github\listasimplementeenlazada\ayed\listarecursiva\lista.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+
+1760395722 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\listarecursiva\main.c
+	"lista.h"
+	"funciones.h"
+
+1760731608 source:c:\users\user\documents\github\listasimplementeenlazada\ayed\listarecursiva\funciones.c
+	"funciones.h"
+
+1760731602 c:\users\user\documents\github\listasimplementeenlazada\ayed\listarecursiva\funciones.h
+	"lista.h"
+

@@ -1,7 +1,6 @@
 #include "funciones.h"
 
-
-void crearLote(){
+int crearLote(FILE *p){
     tPersona personas[] = { {45526451, "nahuel", 'm'},
                             {123456789, "maria", 'f'},
                             {987654321, "fernando", 'm'},
@@ -28,54 +27,38 @@ void crearLote(){
                             {11155555,"cande",'f'},
                             {99,"mateo",'m'},
                             };
-    FILE *pf = fopen("datos.dat", "wb");
-    if(!pf) return;
-    fwrite(personas, sizeof(personas), 1, pf);
-    fclose(pf);
+    fwrite(personas, sizeof(personas), 1, p);
+    return sizeof(personas)/sizeof(tPersona);
 }
 
-int compararInt(const void*d1, const void*d2){
-    return (*(int*)d1 - *(int*)d2);
-}
-void mostrarInt(void *d){
-    printf("[%d]", *(int*)d);
+int compararPersonas(const void *d1, const void *d2){
+    tPersona *pers1 = (tPersona*)d1, *pers2 = (tPersona*)d2;
+    return pers1->dni - pers2->dni;
 }
 
-int leerDatosArchivoPer(void* dest, FILE *arch){
-    tPersona per;
-    tIndicePersona ind;
-    ind.offset = ftell(arch);
-    if(fread(&per, sizeof(tPersona), 1, arch)){
-        ind.dni = per.dni;
-        memcpy(dest, &ind, sizeof(tIndicePersona));
-        return sizeof(tIndicePersona);
-    }
-    else{
+void mostrarPersonas(const void *p){
+    tPersona *pers = (tPersona*)p;
+    printf("DNI: %d, Nombre: %s, Sexo: %c\n", pers->dni, pers->nya, pers->sex);
+}
+
+void mostrarInt(void* dato){
+    printf("%d ", *(int*)dato);
+}
+int compararInt(const void* dato1, const void *dato2){
+    return *(int*)dato1 - *(int*)dato2;
+}
+void escribirPersonaIndice(void *dst, const void* src, unsigned pos){
+    tPersona *persona = (tPersona*)src;
+    tIndice *indice = (tIndice*)dst;
+
+    *(int*)indice->clave = persona->dni;
+    indice->pos = pos;
+}
+unsigned leerArchivoBin(void **dst, void* src, unsigned pos, void *param){
+    *dst = malloc(*(int*)param);
+    if(!dst)
         return 0;
-    }
+    fseek((FILE*)src, (*(int*)param) * pos, SEEK_SET);
+    return fread(*dst, *(int*)param, 1, (FILE*)src);
 }
-int compararIndPer(const void*d1, const void*d2){
-    tIndicePersona *per1 = (tIndicePersona*)d1, *per2 = (tIndicePersona*)d2;
-    return (per1->dni - per2->dni);
-}
-int leerDatosArchivoIdx(void* dest, FILE *arch){
-    dest = malloc(sizeof(tIndicePersona));
-    if(!dest) return 0;
-    if(fread(dest, sizeof(tIndicePersona), 1, arch))
-        return 1;
-    else
-        return 0;
-}
-
-void mostrarPersonaIdx(void *d){
-    tIndicePersona *per = (tIndicePersona*)d;
-    printf("[%d]\n", per->dni);
-}
-
-
-
-
-
-
-
 
