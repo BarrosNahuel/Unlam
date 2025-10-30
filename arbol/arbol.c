@@ -239,7 +239,7 @@ int cargarArbolDesdeArchivoDesordenado(tArbol *p, FILE *pf, unsigned tam, LEER l
     if(!info){
         return 0;
     }
-    while((leido = leer(info, pf)) > 0){
+    while((leido = leer(info, pf, &tam)) > 0){
         insertarEnArbolBRec(p, info, leido, cmp);
     }
     free(info);
@@ -258,7 +258,7 @@ int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigne
     tArbol arbol;
     FILE *pDat, *pInd;
 
-    pDat = fopen(nombArchDat, "rb");
+    pDat = fopen(nombArchDat, "r+b");
     if(!pDat) return 0;
     pInd = fopen(nombArchInd, "wb");
     if(!pInd){
@@ -277,8 +277,8 @@ int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigne
 }
 int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, LEER leer){
     int cantReg;
-    if(!pf) return 0;
-    fseek(pf, 0L, SEEK_END);
+    if(!pf || *p) return 0;
+    fseek(pf, 0, SEEK_END);
     cantReg = (ftell(pf)/tam) - 1;
 
     return __cargarArbolDesdeArchivoOrdenado(p, pf, tam, 0, cantReg, leer);
@@ -291,14 +291,17 @@ int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li,
     (*p) = (tNodo*)malloc(sizeof(tNodo));
     if(!(*p)) return 0;
 
-    fseek(pf, med * tam, SEEK_SET);
-
-    (*p)->tam = leer((*p)->dato, pf);
+    (*p)->dato = malloc(tam);
+    if(!(*p)->dato){
+        free(*p);
+        return 0;
+    }
+    if(!((*p)->tam = leer((*p)->dato, pf, &med))) return 1;
     (*p)->der = NULL;
     (*p)->izq = NULL;
 
     __cargarArbolDesdeArchivoOrdenado(&(*p)->izq, pf, tam, li, med - 1, leer);
-    __cargarArbolDesdeArchivoOrdenado(&(*p)->izq, pf, tam, med + 1, ls, leer);
+    __cargarArbolDesdeArchivoOrdenado(&(*p)->der, pf, tam, med + 1, ls, leer);
 
     return 1;
 }
@@ -306,6 +309,12 @@ int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li,
 //    tArbol *pBuscado = buscarNodo(p, clave, cmp);
 //
 //}
+int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER leer, CMP cmp){
+    tArbol *pBuscado = buscarNodo(p, clave, cmp);
+    if(!pBuscado) return 0;
+    if(!leer(dato, pf, (*pBuscado)->dato)) return 0;
+    return 1;
+}
 
 
 

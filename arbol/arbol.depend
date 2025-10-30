@@ -35,3 +35,21 @@
 	"arbol.h"
 	"funciones.h"
 
+1761829898 source:c:\users\compu\documents\github\listasimplementeenlazada\arbol\arbol.c
+	"arbol.h"
+
+1761829664 c:\users\compu\documents\github\listasimplementeenlazada\arbol\arbol.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1761831503 source:c:\users\compu\documents\github\listasimplementeenlazada\arbol\funciones.c
+	"funciones.h"
+
+1761831496 c:\users\compu\documents\github\listasimplementeenlazada\arbol\funciones.h
+	"arbol.h"
+
+1761831597 source:c:\users\compu\documents\github\listasimplementeenlazada\arbol\main.c
+	"arbol.h"
+	"funciones.h"
+

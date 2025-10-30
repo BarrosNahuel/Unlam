@@ -17,7 +17,7 @@ typedef struct sNodo{
 
 typedef tNodo* tArbol;
 typedef int (*CMP)(const void*, const void*);
-typedef int (*LEER)(void* dest, FILE *arch);
+typedef int (*LEER)(void* dest, FILE *arch, void *param);
 
 void crearArbolB(tArbol *p);
 int insertarEnArbolBRec(tArbol *p, void *dato, unsigned tam, CMP cmp);
@@ -50,7 +50,7 @@ int cargarArchivoDesdeArbol(tArbol *p, FILE *pf);
 int crearArchivoIndice(const char* nombArchDat, const char* nombArchInd, unsigned tam, LEER leer, CMP cmp);
 int cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, LEER leer);
 int __cargarArbolDesdeArchivoOrdenado(tArbol *p, FILE *pf, unsigned tam, int li, int ls, LEER leer);
-//int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, );
+int buscarEnArbolIndice(tArbol *p, void *dato, const void *clave, FILE *pf, LEER leer, CMP cmp);
 ///Contar Hojas, Contar No Hojas, Cuantos Nodos Tiene Un Arbol, Clave Mayor, Clave Menor, Cantidad Nodos
 ///Del Sub Arbol Derecho Que Cumple Una Condicion, Cantidad De Nodos Que Cumplen Una Condicion a Partir De Una Clave,
 ///Promedio de los Nodos Con Clave Parcial, Buscar Un Valor No Clave Del Arbol Con Accion (Pueden Ser Varios).

@@ -2,31 +2,31 @@
 
 
 void crearLote(){
-    tPersona personas[] = { {45526451, "nahuel", 'm'},
-                            {123456789, "maria", 'f'},
-                            {987654321, "fernando", 'm'},
-                            {123543,"Alejandro",'m'},
-                            {543236,"Miriam",'f'},
-                            {856345,"Alejandra",'f'},
-                            {234125,"Paredes",'m'},
-                            {986456,"Lionel",'m'},
-                            {543134,"Emiliano",'m'},
-                            {76534,"Morena",'f'},
-                            {5432,"Jorge",'m'},
-                            {3423567,"Marchesin",'m'},
-                            {1254324,"Mauricio",'m'},
-                            {98753,"Cristina",'f'},
-                            {452311,"Almiron",'m'},
-                            {22244454,"Julia",'f'},
-                            {3542356,"Juliana",'f'},
-                            {744443223,"Malena",'f'},
-                            {112244,"Joel",'m'},
-                            {221114,"Mauro",'m'},
-                            {66331,"Martina",'f'},
-                            {124444,"Nestor",'m'},
-                            {99775654,"Gaby",'f'},
-                            {11155555,"cande",'f'},
-                            {99,"mateo",'m'},
+    tPersona personas[] = { {45, "nahuel", 'm'},
+                            {12, "maria", 'f'},
+                            {98, "fernando", 'm'},
+                            {11,"Alejandro",'m'},
+                            {54,"Miriam",'f'},
+                            {85,"Alejandra",'f'},
+                            {23,"Paredes",'m'},
+                            {99,"Lionel",'m'},
+                            {53,"Emiliano",'m'},
+                            {76,"Morena",'f'},
+                            {51,"Jorge",'m'},
+                            {34,"Marchesin",'m'},
+                            {10,"Mauricio",'m'},
+                            {91,"Cristina",'f'},
+                            {44,"Almiron",'m'},
+                            {22,"Julia",'f'},
+                            {35,"Juliana",'f'},
+                            {74,"Malena",'f'},
+                            {13,"Joel",'m'},
+                            {23,"Mauro",'m'},
+                            {66,"Martina",'f'},
+                            {15,"Nestor",'m'},
+                            {93,"Gaby",'f'},
+                            {17,"cande",'f'},
+                            {95,"mateo",'m'},
                             };
     FILE *pf = fopen("datos.dat", "wb");
     if(!pf) return;
@@ -41,10 +41,11 @@ void mostrarInt(void *d){
     printf("[%d]", *(int*)d);
 }
 
-int leerDatosArchivoPer(void* dest, FILE *arch){
+int leerDatosArchivoPer(void* dest, FILE *arch, void *param){
     tPersona per;
     tIndicePersona ind;
     ind.offset = ftell(arch);
+
     if(fread(&per, sizeof(tPersona), 1, arch)){
         ind.dni = per.dni;
         memcpy(dest, &ind, sizeof(tIndicePersona));
@@ -58,18 +59,29 @@ int compararIndPer(const void*d1, const void*d2){
     tIndicePersona *per1 = (tIndicePersona*)d1, *per2 = (tIndicePersona*)d2;
     return (per1->dni - per2->dni);
 }
-int leerDatosArchivoIdx(void* dest, FILE *arch){
-    dest = malloc(sizeof(tIndicePersona));
-    if(!dest) return 0;
+int compararClaveConIndPer(const void *clave, const void *ind){
+    tIndicePersona *per = (tIndicePersona*)ind;
+    return (*(int*)clave - per->dni);
+}
+int leerDatosArchivoIdx(void* dest, FILE *arch, void *param){
+    int med = *(int*)param;
+
+    fseek(arch, med * sizeof(tIndicePersona), SEEK_SET);
+
     if(fread(dest, sizeof(tIndicePersona), 1, arch))
-        return 1;
+        return sizeof(tIndicePersona);
     else
         return 0;
 }
 
 void mostrarPersonaIdx(void *d){
     tIndicePersona *per = (tIndicePersona*)d;
-    printf("[%d]\n", per->dni);
+    printf("[%ld]", per->dni);
+}
+int leerDatosArchivoPerConIdx(void* dest, FILE *arch, void *param){
+    tIndicePersona *pIdx = (tIndicePersona*)param;
+    fseek(arch, pIdx->offset, SEEK_SET);
+    return fread(dest, sizeof(tPersona), 1, arch);
 }
 
 
